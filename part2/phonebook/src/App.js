@@ -13,11 +13,10 @@ const App = () => {
   const [ notification, setNotification] = useState('Welcome to phonebook')
 
   useEffect(() => {
-    console.log('effect')
     personService
       .getAll()
-        .then(response => {
-          setPersons(response)
+      .then(response => {
+        setPersons(response)
       })
   }, [])
   console.log('render', persons.length, 'persons')
@@ -42,7 +41,7 @@ const App = () => {
           .then(response => {
             console.log(response)
             setPersons(persons.map(person => person.id !== response.id ? person : response))
-            setNotification(`Updated ${newName}'s number`);
+            setNotification(`Updated ${newName}'s number`)
           })
           .catch(error => {
             console.log('fail')
@@ -50,11 +49,15 @@ const App = () => {
       }
     }else{
       personService
-      .create(personObject)
+        .create(personObject)
         .then(response => {
           setPersons(persons.concat(personObject))
-          setNotification(`Added ${newName}`);
-      })
+          setNotification(`Added ${newName}`)
+        })
+        .catch(error => {
+          console.log(error.response.data.error)
+          setNotification(error.response.data.error)
+        })
     }
     setNewName('')
     setNewNumber('')
