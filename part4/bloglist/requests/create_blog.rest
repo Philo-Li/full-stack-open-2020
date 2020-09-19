@@ -2,9 +2,9 @@ POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-  "title": "This is hello",
-  "author": "philo",
+  "title": "This is he4",
+  "author": "phil4",
   "url": "https://lulalap.com",
-  "likes": 7
+  "likes": 13
 }
 
