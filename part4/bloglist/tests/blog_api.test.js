@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
-
+const helper = require('./test_helper')
 const app = require('../app')
 
 const api = supertest(app)
@@ -9,60 +9,10 @@ const Blog = require('../models/blog')
 
 jest.setTimeout(30000)
 
-const initialBlogs = [
-  {
-    _id: '5a422a851b54a676234d17f7',
-    title: 'React patterns',
-    author: 'Michael Chan',
-    url: 'https://reactpatterns.com/',
-    likes: 7,
-    __v: 0,
-  },
-  {
-    _id: '5a422aa71b54a676234d17f8',
-    title: 'Go To Statement Considered Harmful',
-    author: 'Edsger W. Dijkstra',
-    url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-    likes: 5,
-    __v: 0,
-  },
-  {
-    _id: '5a422b3a1b54a676234d17f9',
-    title: 'Canonical string reduction',
-    author: 'Edsger W. Dijkstra',
-    url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
-    likes: 12,
-    __v: 0,
-  },
-  {
-    _id: '5a422b891b54a676234d17fa',
-    title: 'First class tests',
-    author: 'Robert C. Martin',
-    url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
-    likes: 10,
-    __v: 0,
-  },
-  {
-    _id: '5a422ba71b54a676234d17fb',
-    title: 'TDD harms architecture',
-    author: 'Robert C. Martin',
-    url: 'http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html',
-    likes: 0,
-    __v: 0,
-  },
-  {
-    _id: '5a422bc61b54a676234d17fc',
-    title: 'Type wars',
-    author: 'Robert C. Martin',
-    url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
-    likes: 2,
-    __v: 0,
-  }]
-
 beforeEach(async () => {
   await Blog.deleteMany({})
 
-  for (let blog of initialBlogs) {
+  for (let blog of helper.initialBlogs) {
     let blogObject = new Blog(blog)
     await blogObject.save()
   }
@@ -82,7 +32,7 @@ describe('HTTP GET', () => {
 
   test('blogs length', async () => {
     const response = await api.get('/api/blogs')
-    expect(response.body).toHaveLength(initialBlogs.length)
+    expect(response.body).toHaveLength(helper.initialBlogs.length)
   })
 
   test('whether the unique identifier named id', async () => {
@@ -108,7 +58,7 @@ describe('HTTP POST', () => {
       .expect('Content-Type', /application\/json/)
 
     const response = await api.get('/api/blogs')
-    expect(response.body).toHaveLength(initialBlogs.length + 1)
+    expect(response.body).toHaveLength(helper.initialBlogs.length + 1)
   })
 
   test('If post request lack the attributes with "title" and "url", return 400 Bad Request', async () => {
@@ -124,7 +74,7 @@ describe('HTTP POST', () => {
   
     const response = await api.get('/api/blogs')
   
-    expect(response.body).toHaveLength(initialBlogs.length)
+    expect(response.body).toHaveLength(helper.initialBlogs.length)
   })
 
   test('If post request lack the "likes" attribute, set it to 0', async () => {
@@ -141,11 +91,35 @@ describe('HTTP POST', () => {
       .expect(200)
   
     const response = await api.get('/api/blogs')
-    const newPost = response.body[initialBlogs.length]
+    const newPost = response.body[helper.initialBlogs.length]
 
     expect(newPost.likes).toBe(0)
   })
 
+})
+
+describe('HTTP DELETE', () => {
+  test('blogs deleted one object', async () => {
+    const id = helper.initialBlogs[0]._id
+    await api
+      .delete(`/api/blogs/${id}`)
+      .expect(204)
+
+    const response = await api.get('/api/blogs')
+    expect(response.body).toHaveLength(helper.initialBlogs.length - 1)
+  })
+})
+
+describe('HTTP PUT', () => {
+  test('blogs updated one object\'s like', async () => {
+    const updatedBlog = {...helper.initialBlogs[0], likes:123}
+    await api
+      .put(`/api/blogs/${updatedBlog._id}`)
+      .send(updatedBlog)
+
+    const response = await api.get('/api/blogs')
+    expect(response.body[0].likes).toBe(123)
+  })
 })
 
 afterAll(() => {
