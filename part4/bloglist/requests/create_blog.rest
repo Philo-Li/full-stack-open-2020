@@ -1,10 +1,11 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ikg0MjM1MjN0cnlyNDYzIiwiaWQiOiI1ZjY2YjgyNWI5NWFjNTMwYzA4ZDM0ODciLCJpYXQiOjE2MDA1Njk4MzZ9.WDnn8H1YzBy0OI1LDjP1KlDN3Z5t3Dja7KAwAgj9V2A
 
 {
-  "title": "This is he5",
-  "author": "phil5",
+  "title": "Hello Mike2",
+  "author": "mlmaihi",
   "url": "https://lulalap.com",
-  "likes": 13
+  "likes": 1
 }
 

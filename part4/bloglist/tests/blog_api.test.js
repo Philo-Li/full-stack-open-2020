@@ -16,10 +16,6 @@ beforeEach(async () => {
     let blogObject = new Blog(blog)
     await blogObject.save()
   }
-  // const blogObjects = initialBlogs
-  //   .map(blog => new Blog(blog))
-  // const promiseArray = blogObjects.map(blog => blog.save())
-  // await Promise.all(promiseArray)
 })
 
 describe('HTTP GET', () => {
