@@ -30,6 +30,7 @@
     "supertest": "^4.0.2"
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "timers": "fake"
   }
 }
