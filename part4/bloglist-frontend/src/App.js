@@ -30,23 +30,29 @@ const App = () => {
     }
   }, [])
 
-  const addBlog = (event) => {
+  const addBlog = async(event) => {
     event.preventDefault()
-    const blogObject = {
-      title: newTitle,
-      author: newAuthor,
-      url: newUrl,
-      user: user._id
+    try {
+      const blogObject = {
+        title: newTitle,
+        author: newAuthor,
+        url: newUrl,
+        user: user._id
+      }
+    
+      const returnedBlog = await blogService.create(blogObject)
+      setBlogs(blogs.concat(returnedBlog))
+      setNotification(`a new blog ${newTitle} by ${newAuthor} added`)
+
+      setNewTitle('')
+      setNewAuthor('')
+      setNewUrl('')
+    } catch(exception){
+      setNotification('Failed to add new blog')
     }
-  
-    blogService
-      .create(blogObject)
-      .then(returnedBlog => {
-        setBlogs(blogs.concat(returnedBlog))
-        setNewTitle('')
-        setNewAuthor('')
-        setNewUrl('')
-      })
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
   }
 
   const handleLogin = async(event) => {
@@ -66,13 +72,11 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      // setErrorMessage('Wrong credentials')
-      setNotification('Wrong credentials')
-      setTimeout(() => {
-        // setErrorMessage(null)
-        setNotification(null)
-      }, 5000)
+      setNotification('Wrong username or password')
     }
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
   }
 
   const handleLogout = async(event) => {
@@ -105,6 +109,7 @@ const App = () => {
     </form>      
   )
 
+  
   const blogForm = () => (
     <form onSubmit={addBlog}>
       <div>
@@ -126,7 +131,7 @@ const App = () => {
         />
       </div>
       <div>
-        rul
+        url
           <input
           type="text"
           value={newUrl}
