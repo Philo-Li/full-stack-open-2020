@@ -6,6 +6,9 @@ import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
+  const [newTitle, setNewTitle] = useState('')
+  const [newAuthor, setNewAuthor] = useState('')
+  const [newUrl, setNewUrl] = useState('')
   // const [errorMessage, setErrorMessage] = useState(null)
   const [ notification, setNotification] = useState('Welcome to Bloglist')
   const [username, setUsername] = useState('') 
@@ -26,6 +29,25 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
+
+  const addBlog = (event) => {
+    event.preventDefault()
+    const blogObject = {
+      title: newTitle,
+      author: newAuthor,
+      url: newUrl,
+      user: user._id
+    }
+  
+    blogService
+      .create(blogObject)
+      .then(returnedBlog => {
+        setBlogs(blogs.concat(returnedBlog))
+        setNewTitle('')
+        setNewAuthor('')
+        setNewUrl('')
+      })
+  }
 
   const handleLogin = async(event) => {
     event.preventDefault()
@@ -84,16 +106,36 @@ const App = () => {
   )
 
   const blogForm = () => (
-    // <form onSubmit={addBlog}>
-    //   <input
-    //     value={newNote}
-    //     onChange={handleNoteChange}
-    //   />
-    //   <button type="submit">save</button>
-    // </form>  
-    blogs.map(blog =>
-      <Blog key={blog.id} blog={blog} />
-    )
+    <form onSubmit={addBlog}>
+      <div>
+        title
+          <input
+          type="text"
+          value={newTitle}
+          name="Title"
+          onChange={({ target }) => setNewTitle(target.value)}
+        />
+      </div>
+      <div>
+        author
+          <input
+          type="text"
+          value={newAuthor}
+          name="Author"
+          onChange={({ target }) => setNewAuthor(target.value)}
+        />
+      </div>
+      <div>
+        rul
+          <input
+          type="text"
+          value={newUrl}
+          name="Url"
+          onChange={({ target }) => setNewUrl(target.value)}
+        />
+      </div>
+      <button type="submit">save</button>
+    </form>  
   )
 
   return (
@@ -107,11 +149,15 @@ const App = () => {
         <p>{user.name} logged-in
           <button type="submit" onClick={handleLogout} >logout</button>
         </p>
+        <h2>create new</h2>
         {blogForm()}
+        <ul>
+          {blogs.map((blog) =>
+            <Blog key={blog.id} blog={blog} />
+          )}
+    </ul>
       </div>
-    }
-
-      
+    } 
     </div>
   )
 }
