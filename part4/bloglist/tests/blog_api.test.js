@@ -2,17 +2,37 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const helper = require('./test_helper')
 const app = require('../app')
+const Blog = require('../models/blog')
+const User = require('../models/user')
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+const config = require('../utils/config')
 
 const api = supertest(app)
-
-const Blog = require('../models/blog')
+let token
 
 jest.setTimeout(30000)
+jest.useFakeTimers()
 
 beforeEach(async () => {
   await Blog.deleteMany({})
+  await User.deleteMany({})
+
+  const passwordHash = await bcrypt.hash('123456', 10)
+  const user = new User({
+    username: 'admin',
+    name: 'admin',
+    passwordHash,
+  })
+  const savedUser = await user.save()
+  const userForToken = {
+    username: savedUser.username,
+    id: savedUser._id,
+  }
+  token = jwt.sign(userForToken, config.SECRET)
 
   for (let blog of helper.initialBlogs) {
+    blog.user = savedUser._id
     let blogObject = new Blog(blog)
     await blogObject.save()
   }
@@ -49,6 +69,7 @@ describe('HTTP POST', () => {
 
     await api
       .post('/api/blogs')
+      .set('Authorization', `bearer ${token}`)
       .send(newBlog)
       .expect(200)
       .expect('Content-Type', /application\/json/)
@@ -65,6 +86,7 @@ describe('HTTP POST', () => {
   
     await api
       .post('/api/blogs')
+      .set('Authorization', `bearer ${token}`)
       .send(newBlog)
       .expect(400)
   
@@ -83,6 +105,7 @@ describe('HTTP POST', () => {
   
     await api
       .post('/api/blogs')
+      .set('Authorization', `bearer ${token}`)
       .send(newBlog)
       .expect(200)
   
