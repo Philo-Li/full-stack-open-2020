@@ -29,7 +29,7 @@ beforeEach(async () => {
     username: savedUser.username,
     id: savedUser._id,
   }
-  token = jwt.sign(userForToken, config.SECRET)
+  token = await jwt.sign(userForToken, config.SECRET)
 
   for (let blog of helper.initialBlogs) {
     blog.user = savedUser._id
@@ -122,6 +122,7 @@ describe('HTTP DELETE', () => {
     const id = helper.initialBlogs[0]._id
     await api
       .delete(`/api/blogs/${id}`)
+      .set('Authorization', `bearer ${token}`)
       .expect(204)
 
     const response = await api.get('/api/blogs')
@@ -134,6 +135,7 @@ describe('HTTP PUT', () => {
     const updatedBlog = {...helper.initialBlogs[0], likes:123}
     await api
       .put(`/api/blogs/${updatedBlog._id}`)
+      .set('Authorization', `bearer ${token}`)
       .send(updatedBlog)
 
     const response = await api.get('/api/blogs')

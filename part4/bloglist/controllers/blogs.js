@@ -12,11 +12,12 @@ blogsRouter.get('/', async (request, response) => {
 
 blogsRouter.post('/', async (request, response, next) => {
   const body = request.body
-  console.log('request', request.token)
   const decodedToken = jwt.verify(request.token, process.env.SECRET)
   const user = await User.findById(decodedToken.id)
 
-  console.log('user', user._id)
+  if (!body.title || !body.url) {
+    return response.status(400).json({ error: 'Lack the title or url' })
+  }
 
   const blog = new Blog({
     title: body.title,
@@ -49,9 +50,6 @@ blogsRouter.delete('/:id', async (request, response, next) => {
   const blog = await Blog.findById(request.params.id)
   
   const decodedToken = jwt.verify(request.token, process.env.SECRET)
-  console.log('decodedToken.id', decodedToken.id)
-  console.log('bloguser.id', blog.user)
-
 
   if ( blog.user.toString() === decodedToken.id.toString() ){
     await Blog.findByIdAndRemove(request.params.id)
