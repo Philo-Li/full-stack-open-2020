@@ -6,7 +6,7 @@ import Footer from './components/Footer'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
-import loginService from './services/login' 
+import loginService from './services/login'
 
 
 const App = () => {
@@ -15,15 +15,15 @@ const App = () => {
   const [newAuthor, setNewAuthor] = useState('')
   const [newUrl, setNewUrl] = useState('')
   const [notification, setNotification] = useState('Welcome to Bloglist')
-  const [username, setUsername] = useState('') 
-  const [password, setPassword] = useState('') 
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>{
+    blogService.getAll().then(blogs => {
       blogs.sort((a, b) => b.likes - a.likes)
       setBlogs( blogs )
-    })  
+    })
   }, [])
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const App = () => {
         url: newUrl,
         user: user._id
       }
-    
+
       const returnedBlog = await blogService.create(blogObject)
       blogs.concat(returnedBlog)
       setBlogs(blogs.sort((a, b) => b.likes - a.likes))
@@ -69,7 +69,7 @@ const App = () => {
       const changedBlog = { ...blog, likes: blog.likes + 1 }
 
       await blogService.update(changedBlog)
-      
+
       blogs.sort((a, b) => b.likes - a.likes)
       setBlogs(blogs.map(blog => blog.id !== id ? blog : changedBlog))
 
@@ -93,7 +93,7 @@ const App = () => {
 
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
-      ) 
+      )
 
       blogService.setToken(user.token)
       setUser(user)
@@ -144,17 +144,25 @@ const App = () => {
     <div>
       <ul>
         {blogs.map((blog) =>
-          <Blog key={blog.id} 
-          blog={blog} 
-          blogs={blogs} 
-          setBlogs={setBlogs} 
-          setNotification={setNotification} 
-          handleLike={() => handleLike(blog.id)}/>
+          <Blog key={blog.id}
+            blog={blog}
+            blogs={blogs}
+            setBlogs={setBlogs}
+            setNotification={setNotification}
+            handleLike={() => handleLike(blog.id)}/>
         )}
       </ul>
-      
     </div>
-    
+  )
+
+  const loggedInForm = () => (
+    <div>
+      <p>{user.name} logged-in
+        <button type="submit" onClick={handleLogout} >logout</button>
+      </p>
+      {blogForm()}
+      {detailForm()}
+    </div>
   )
 
   return (
@@ -162,18 +170,7 @@ const App = () => {
       <h2>blogs</h2>
       <Notification message={notification} />
 
-      {user === null ?
-      loginForm() :
-      <div>
-        <p>{user.name} logged-in
-          <button type="submit" onClick={handleLogout} >logout</button>
-        </p>
-        
-        {blogForm()}
-        {detailForm()}
-        
-      </div>
-      } 
+      {user === null ? loginForm() : loggedInForm()}
 
       <Footer />
     </div>
