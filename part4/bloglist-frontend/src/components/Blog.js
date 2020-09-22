@@ -1,6 +1,6 @@
 import React from 'react'
 import DetailTogglable from './DetailTogglable'
-import blogService from "../services/blogs"
+import blogService from '../services/blogs'
 
 
 const Blog = ({ blog, blogs, setBlogs, setNotification, handleLike }) => {
@@ -17,7 +17,6 @@ const Blog = ({ blog, blogs, setBlogs, setNotification, handleLike }) => {
 
   // const handleLike = async(event) => {
   //   event.preventDefault()
-    
   // }
 
   const handleDelete = async(blogToDelete) => {
@@ -28,13 +27,13 @@ const Blog = ({ blog, blogs, setBlogs, setNotification, handleLike }) => {
         const changedBlogs = blogs.filter(blog => blog.id !== id)
         console.log(blogToDelete)
         console.log(changedBlogs)
-  
+
         await blogService.deleteBlog(blogToDelete)
-        
+
         setBlogs(changedBlogs)
-  
+
         setNotification(`Deleted Blog: ${blogToDelete.title} `)
-  
+
       } catch(exception){
         setNotification('Failed to Delete')
       }

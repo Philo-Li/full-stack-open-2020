@@ -6,15 +6,15 @@ const LoginForm = ({
   handlePasswordChange,
   username,
   password
- }) => {
- return (
-   <div>
-     <h2>Login</h2>
+}) => {
+  return (
+    <div>
+      <h2>Login</h2>
 
-     <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <div>
           username
-            <input
+          <input
             type="text"
             value={username}
             name="Username"
@@ -23,7 +23,7 @@ const LoginForm = ({
         </div>
         <div>
           password
-            <input
+          <input
             type="password"
             value={password}
             name="Password"
@@ -31,9 +31,9 @@ const LoginForm = ({
           />
         </div>
         <button type="submit">login</button>
-      </form>      
-   </div>
- )
+      </form>
+    </div>
+  )
 }
 
 export default LoginForm
