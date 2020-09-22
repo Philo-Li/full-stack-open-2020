@@ -1,7 +1,7 @@
 import React from 'react'
 import DetailTogglable from './DetailTogglable'
 
-const Blog = ({ blog, like }) => {
+const Blog = ({ blog, handleLike }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -9,6 +9,11 @@ const Blog = ({ blog, like }) => {
     borderWidth: 1,
     marginBottom: 5
   }
+
+  // const handleLike = async(event) => {
+  //   event.preventDefault()
+    
+  // }
 
   return(
     <div style={blogStyle}>
@@ -19,7 +24,7 @@ const Blog = ({ blog, like }) => {
         </div>
         <div>
           {blog.likes}
-          <button onClick={like}>like</button>
+          <button onClick={handleLike}>like</button>
         </div>
         <div>
           {blog.author}

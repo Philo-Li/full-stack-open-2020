@@ -14,7 +14,7 @@ const App = () => {
   const [newTitle, setNewTitle] = useState('')
   const [newAuthor, setNewAuthor] = useState('')
   const [newUrl, setNewUrl] = useState('')
-  const [ notification, setNotification] = useState('Welcome to Bloglist')
+  const [notification, setNotification] = useState('Welcome to Bloglist')
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
   const [user, setUser] = useState(null)
@@ -60,6 +60,24 @@ const App = () => {
     }, 5000)
   }
 
+  const handleLike = async(id) => {
+    try {
+      const blog = blogs.find(n => n.id === id)
+      const changedBlog = { ...blog, likes: blog.likes + 1 }
+
+      await blogService.update(changedBlog)
+      setBlogs(blogs.map(blog => blog.id !== id ? blog : changedBlog))
+
+      setNotification(`Blog ${blog.title} likes + 1`)
+
+    } catch(exception){
+      setNotification('Failed to like')
+    }
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
+  }
+
   const handleLogin = async(event) => {
     event.preventDefault()
     console.log('logging in with', username, password)
@@ -89,6 +107,8 @@ const App = () => {
     window.localStorage.removeItem('loggedBlogappUser')
     setUser(null)
   }
+
+
 
   const loginForm = () => (
     <Togglable buttonLabel='login'>
@@ -121,7 +141,7 @@ const App = () => {
     <div>
       <ul>
         {blogs.map((blog) =>
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} handleLike={() => handleLike(blog.id)}/>
         )}
       </ul>
       
