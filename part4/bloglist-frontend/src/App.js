@@ -20,9 +20,10 @@ const App = () => {
   const [user, setUser] = useState(null)
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
+    blogService.getAll().then(blogs =>{
+      blogs.sort((a, b) => b.likes - a.likes)
       setBlogs( blogs )
-    )  
+    })  
   }, [])
 
   useEffect(() => {
@@ -46,7 +47,9 @@ const App = () => {
       }
     
       const returnedBlog = await blogService.create(blogObject)
-      setBlogs(blogs.concat(returnedBlog))
+      blogs.concat(returnedBlog)
+      setBlogs(blogs.sort((a, b) => b.likes - a.likes))
+
       setNotification(`a new blog ${newTitle} by ${newAuthor} added`)
 
       setNewTitle('')
@@ -66,6 +69,8 @@ const App = () => {
       const changedBlog = { ...blog, likes: blog.likes + 1 }
 
       await blogService.update(changedBlog)
+      
+      blogs.sort((a, b) => b.likes - a.likes)
       setBlogs(blogs.map(blog => blog.id !== id ? blog : changedBlog))
 
       setNotification(`Blog ${blog.title} likes + 1`)
