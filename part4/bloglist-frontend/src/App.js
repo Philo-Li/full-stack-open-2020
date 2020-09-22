@@ -14,7 +14,6 @@ const App = () => {
   const [newTitle, setNewTitle] = useState('')
   const [newAuthor, setNewAuthor] = useState('')
   const [newUrl, setNewUrl] = useState('')
-  // const [errorMessage, setErrorMessage] = useState(null)
   const [ notification, setNotification] = useState('Welcome to Bloglist')
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
@@ -118,6 +117,18 @@ const App = () => {
     </Togglable>
   )
 
+  const detailForm = () => (
+    <div>
+      <ul>
+        {blogs.map((blog) =>
+          <Blog key={blog.id} blog={blog} />
+        )}
+      </ul>
+      
+    </div>
+    
+  )
+
   return (
     <div>
       <h2>blogs</h2>
@@ -131,11 +142,8 @@ const App = () => {
         </p>
         
         {blogForm()}
-        <ul>
-          {blogs.map((blog) =>
-            <Blog key={blog.id} blog={blog} />
-          )}
-        </ul>
+        {detailForm()}
+        
       </div>
       } 
 
