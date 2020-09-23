@@ -1,9 +1,10 @@
-import React from 'react'
-import DetailTogglable from './DetailTogglable'
+import React, { useState } from 'react'
 import blogService from '../services/blogs'
 
 
-const Blog = ({ blog, blogs, setBlogs, setNotification, handleLike }) => {
+const Blog = ({ blog, blogs, setBlogs, setNotification }) => {
+  const [showInfo, setShowInfo] = useState(false)
+
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -15,9 +16,25 @@ const Blog = ({ blog, blogs, setBlogs, setNotification, handleLike }) => {
     color: 'blue'
   }
 
-  // const handleLike = async(event) => {
-  //   event.preventDefault()
-  // }
+  const handleLike = async(id) => {
+    try {
+      const blog = blogs.find(n => n.id === id)
+      const changedBlog = { ...blog, likes: blog.likes + 1 }
+
+      await blogService.update(changedBlog)
+
+      blogs.sort((a, b) => b.likes - a.likes - 1)
+      setBlogs(blogs.map(blog => blog.id !== id ? blog : changedBlog))
+
+      setNotification(`Blog ${blog.title} likes + 1`)
+
+    } catch(exception){
+      setNotification('Failed to like')
+    }
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
+  }
 
   const handleDelete = async(blogToDelete) => {
     const answer = window.confirm(`Delete Blog ${blogToDelete.title}?`)
@@ -25,8 +42,6 @@ const Blog = ({ blog, blogs, setBlogs, setNotification, handleLike }) => {
       try {
         const id = blogToDelete.id
         const changedBlogs = blogs.filter(blog => blog.id !== id)
-        console.log(blogToDelete)
-        console.log(changedBlogs)
 
         await blogService.deleteBlog(blogToDelete)
 
@@ -43,22 +58,30 @@ const Blog = ({ blog, blogs, setBlogs, setNotification, handleLike }) => {
     }
   }
 
+  const detailForm = () => (
+    <div className="blog-info">
+      <p>
+        <a href={blog.url} />
+        url: {blog.url}
+      </p>
+      <p>
+        likes: {blog.likes}
+        <button onClick={() => handleLike(blog.id)}>like</button>
+      </p>
+      <p>added by {blog.user && blog.user.name}</p>
+      <button style={buttonStyle} onClick={() => handleDelete(blog)}>Remove</button>
+    </div>
+  )
+
+  const changeLabel = showInfo ? 'hide' : 'view'
+
   return(
-    <div style={blogStyle}>
-      {blog.title}
-      <DetailTogglable buttonLabel="view" >
-        <div>
-          {blog.url}
-        </div>
-        <div>
-          {blog.likes}
-          <button onClick={handleLike}>like</button>
-        </div>
-        <div>
-          {blog.author}
-        </div>
-        <button style={buttonStyle} onClick={() => handleDelete(blog)}>Remove</button>
-      </DetailTogglable>
+    <div style={blogStyle} >
+      <p className="blog-title">
+        {blog.title} {blog.author}
+        <button onClick={() => setShowInfo(!showInfo)}>{changeLabel}</button>
+      </p>
+      {showInfo ? detailForm(): null}
     </div>
   )}
 

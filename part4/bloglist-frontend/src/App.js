@@ -48,7 +48,7 @@ const App = () => {
 
       const returnedBlog = await blogService.create(blogObject)
       blogs.concat(returnedBlog)
-      setBlogs(blogs.sort((a, b) => b.likes - a.likes))
+      setBlogs(blogs.sort((a, b) => b.likes - a.likes - 1))
 
       setNotification(`a new blog ${newTitle} by ${newAuthor} added`)
 
@@ -57,26 +57,6 @@ const App = () => {
       setNewUrl('')
     } catch(exception){
       setNotification('Failed to add new blog')
-    }
-    setTimeout(() => {
-      setNotification(null)
-    }, 5000)
-  }
-
-  const handleLike = async(id) => {
-    try {
-      const blog = blogs.find(n => n.id === id)
-      const changedBlog = { ...blog, likes: blog.likes + 1 }
-
-      await blogService.update(changedBlog)
-
-      blogs.sort((a, b) => b.likes - a.likes)
-      setBlogs(blogs.map(blog => blog.id !== id ? blog : changedBlog))
-
-      setNotification(`Blog ${blog.title} likes + 1`)
-
-    } catch(exception){
-      setNotification('Failed to like')
     }
     setTimeout(() => {
       setNotification(null)
@@ -148,8 +128,7 @@ const App = () => {
             blog={blog}
             blogs={blogs}
             setBlogs={setBlogs}
-            setNotification={setNotification}
-            handleLike={() => handleLike(blog.id)}/>
+            setNotification={setNotification}/>
         )}
       </ul>
     </div>
