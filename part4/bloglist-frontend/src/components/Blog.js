@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import blogService from '../services/blogs'
 
 
-const Blog = ({ blog, blogs, setBlogs, setNotification }) => {
+const Blog = ({ blog, blogs, setBlogs, setNotification, handleLike }) => {
   const [showInfo, setShowInfo] = useState(false)
 
   const blogStyle = {
@@ -14,26 +14,6 @@ const Blog = ({ blog, blogs, setBlogs, setNotification }) => {
   }
   const buttonStyle = {
     color: 'blue'
-  }
-
-  const handleLike = async(id) => {
-    try {
-      const blog = blogs.find(n => n.id === id)
-      const changedBlog = { ...blog, likes: blog.likes + 1 }
-
-      await blogService.update(changedBlog)
-
-      blogs.sort((a, b) => b.likes - a.likes - 1)
-      setBlogs(blogs.map(blog => blog.id !== id ? blog : changedBlog))
-
-      setNotification(`Blog ${blog.title} likes + 1`)
-
-    } catch(exception){
-      setNotification('Failed to like')
-    }
-    setTimeout(() => {
-      setNotification(null)
-    }, 5000)
   }
 
   const handleDelete = async(blogToDelete) => {

@@ -62,6 +62,25 @@ const App = () => {
       setNotification(null)
     }, 5000)
   }
+  const handleLike = async(id) => {
+    try {
+      const blog = blogs.find(n => n.id === id)
+      const changedBlog = { ...blog, likes: blog.likes + 1 }
+
+      await blogService.update(changedBlog)
+
+      blogs.sort((a, b) => b.likes - a.likes - 1)
+      setBlogs(blogs.map(blog => blog.id !== id ? blog : changedBlog))
+
+      setNotification(`Blog ${blog.title} likes + 1`)
+
+    } catch(exception){
+      setNotification('Failed to like')
+    }
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
+  }
 
   const handleLogin = async(event) => {
     event.preventDefault()
@@ -128,7 +147,8 @@ const App = () => {
             blog={blog}
             blogs={blogs}
             setBlogs={setBlogs}
-            setNotification={setNotification}/>
+            setNotification={setNotification}
+            handleLike={handleLike}/>
         )}
       </ul>
     </div>

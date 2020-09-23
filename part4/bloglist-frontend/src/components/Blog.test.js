@@ -30,15 +30,13 @@ test('renders content', () => {
   // expect(element).toBeEmpty()
 })
 
-test('clicking the button calls event handler once', () => {
+test('clicking the view button shows the blog detail', () => {
   const blog = {
     title: 'Component testing is done with react-testing-library',
     url: 'https://mike.net',
     likes: 12,
     author: 'Mike',
   }
-
-  const mockHandler = jest.fn()
 
   const component = render(
     <Blog blog={blog} />
@@ -54,4 +52,28 @@ test('clicking the button calls event handler once', () => {
   expect(component.container).toHaveTextContent(
     'https://mike.net', 12
   )
+})
+
+test('dubble clicking the button calls event handler twice', () => {
+  const blog = {
+    title: 'Component testing is done with react-testing-library',
+    url: 'https://mike.net',
+    likes: 12,
+    author: 'Mike',
+  }
+
+  const mockHandler = jest.fn()
+
+  const component = render(
+    <Blog blog={blog} handleLike={mockHandler} />
+  )
+
+  const buttonView = component.getByText('view')
+  fireEvent.click(buttonView)
+
+  const buttonLike = component.getByText('like')
+  fireEvent.click(buttonLike)
+  fireEvent.click(buttonLike)
+
+  expect(mockHandler.mock.calls).toHaveLength(2)
 })
