@@ -19,7 +19,7 @@ const BlogForm = ({
             id='title'
             type="text"
             value={title}
-            name="Title"
+            className="Title"
             onChange={handleTitleChange}
           />
         </div>
@@ -29,7 +29,7 @@ const BlogForm = ({
             id='author'
             type="text"
             value={author}
-            name="Author"
+            className="Author"
             onChange={handleAuthorChange}
           />
         </div>
@@ -39,11 +39,11 @@ const BlogForm = ({
             id='url'
             type="text"
             value={url}
-            name="Url"
+            className="Url"
             onChange={handleUrlChange}
           />
         </div>
-        <button type="submit">save</button>
+        <button id='save-button' type="submit">save</button>
       </form>
     </div>
   )

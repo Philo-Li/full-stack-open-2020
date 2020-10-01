@@ -126,7 +126,7 @@ const App = () => {
 
   const blogFormRef = useRef()
   const blogForm = () => (
-    <Togglable buttonLabel="new blog" ref={blogFormRef}>
+    <Togglable id='create-blog' buttonLabel="new blog" ref={blogFormRef}>
       <BlogForm
         title={newTitle}
         author={newAuthor}

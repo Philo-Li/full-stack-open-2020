@@ -17,9 +17,9 @@ describe('Blog app', function() {
     cy.visit('http://localhost:3000')
   })
 
-  afterEach(() => {
-    cy.window().then(window => window.localStorage.clear())
-  })
+  // afterEach(() => {
+  //   cy.window().then(window => window.localStorage.clear())
+  // })
 
   it('Login form is shown', function() {
     cy.contains('blogs')
@@ -50,11 +50,85 @@ describe('Blog app', function() {
 
   describe('When logged in', function() {
     beforeEach(function() {
-      // log in user here
+      cy.get('#login').click()
+      cy.get('input[id=username]').type(user1.username)
+      cy.get('input[id=password]').type(user1.password)
+      cy.get('#login-button').click()
+      // cy.login({ username: user1.username, password: user1.password })
     })
 
     it('A blog can be created', function() {
-      // ...
+      cy.get('#create-blog').click()
+      cy.get('#title').type('First Blog')
+      cy.get('#author').type('Mike')
+      cy.get('#url').type('https://mike.net')
+      cy.get('#save-button').click()
+      cy.contains('a new blog First Blog by Mike added')
+
+      cy.request('GET', 'http://localhost:3001/api/blogs').then(
+        (res) => {
+          const blogs = res.body
+          expect(blogs).to.have.length(1)
+        }
+      )
+      cy.visit('http://localhost:3000')
+      cy.contains('First Blog by Mike')
+      cy.contains('view')
     })
+  })
+
+  describe.only('When logged in with one exist blog', function() {
+    beforeEach(function() {
+      // cy.login({ username: 'mluukkai', password: 'salainen' })
+      // cy.createBlog({ title:'First Blog', author: 'Mike2', url:'https://mike.net' })
+      cy.get('#login').click()
+      cy.get('input[id=username]').type(user1.username)
+      cy.get('input[id=password]').type(user1.password)
+      cy.get('#login-button').click()
+
+      cy.get('#create-blog').click()
+      cy.get('#title').type('First Blog')
+      cy.get('#author').type('Mike')
+      cy.get('#url').type('https://mike.net')
+      cy.get('#save-button').click()
+      cy.request('GET', 'http://localhost:3001/api/blogs')
+      cy.visit('http://localhost:3000')
+    })
+
+    it('A blog can be liked', function () {
+
+      cy.contains('First Blog by Mike')
+      cy.contains('view').click()
+      cy.contains('likes: 0')
+      cy.get('#like-button').click()
+      cy.contains('likes: 1')
+      cy.get('#like-button').click()
+      cy.contains('likes: 2')
+    })
+
+    it('Can delete own blog', function () {
+      cy.contains('view').click()
+      cy.get('#remove-button').click()
+      cy.contains('Deleted Blog: First Blog')
+
+      cy.request('GET', 'http://localhost:3001/api/blogs').then(
+        (res) => {
+          const blogs = res.body
+          expect(blogs).to.have.length(0)
+        }
+      )
+    })
+
+    // it('blogs are ordered by like', function () {
+    //   // cy.root().find('.blog').first().find('.viewbutton').click()
+    //   // cy.root().find('.blog').first().find('.likebutton').click()
+    //   // cy.root().find('.blog').first().find('.blogLikes').contains('1')
+    //   // cy.root().find('.blog').first().find('.blogLikes')
+    //   // cy.root().find('.blog').last().find('.viewbutton').click()
+    //   // cy.root().find('.blog').last().find('.likebutton').click()
+    //   // cy.root().find('.blog').last().find('.blogLikes').contains('1')
+    //   // cy.root().find('.blog').last().find('.likebutton').click()
+    //   // cy.root().find('.blog').first().get('.blogHeader').contains('Other Title')
+    // })
   })
 })

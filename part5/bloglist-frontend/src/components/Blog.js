@@ -45,10 +45,10 @@ const Blog = ({ blog, blogs, setBlogs, setNotification, handleLike }) => {
       </p>
       <p>
         likes: {blog.likes}
-        <button onClick={() => handleLike(blog.id)}>like</button>
+        <button id='like-button' onClick={() => handleLike(blog.id)}>like</button>
       </p>
       <p>added by {blog.user && blog.user.name}</p>
-      <button style={buttonStyle} onClick={() => handleDelete(blog)}>Remove</button>
+      <button id='remove-button' style={buttonStyle} onClick={() => handleDelete(blog)}>Remove</button>
     </div>
   )
 
@@ -57,8 +57,8 @@ const Blog = ({ blog, blogs, setBlogs, setNotification, handleLike }) => {
   return(
     <div style={blogStyle} >
       <p className="blog-title">
-        {blog.title} {blog.author}
-        <button onClick={() => setShowInfo(!showInfo)}>{changeLabel}</button>
+        {blog.title} by {blog.author}
+        <button id='showinfo-button' onClick={() => setShowInfo(!showInfo)}>{changeLabel}</button>
       </p>
       {showInfo ? detailForm(): null}
     </div>
