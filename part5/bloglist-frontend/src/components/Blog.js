@@ -41,7 +41,6 @@ const Blog = ({ blog, blogs, setBlogs, setNotification, handleLike }) => {
   const detailForm = () => (
     <div className="blog-info">
       <p>
-        <a href={blog.url} />
         url: {blog.url}
       </p>
       <p>
