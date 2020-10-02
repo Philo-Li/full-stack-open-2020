@@ -39,7 +39,7 @@ const Blog = ({ blog, blogs, setBlogs, setNotification, handleLike }) => {
   }
 
   const detailForm = () => (
-    <div className="blog-info">
+    <div id='blog-info' className="blog-info">
       <p>
         url: {blog.url}
       </p>
@@ -56,7 +56,7 @@ const Blog = ({ blog, blogs, setBlogs, setNotification, handleLike }) => {
 
   return(
     <div style={blogStyle} >
-      <p className='blog-title'>
+      <p id='blog-form' className='blog-title'>
         {blog.title} by {blog.author}
         <button id='showinfo-button' onClick={() => setShowInfo(!showInfo)}>{changeLabel}</button>
       </p>
