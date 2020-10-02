@@ -27,7 +27,7 @@ const Blog = ({ blog, blogs, setBlogs, setNotification, handleLike }) => {
 
         setBlogs(changedBlogs)
 
-        setNotification(`Deleted Blog: ${blogToDelete.title} `)
+        setNotification(`Deleted Blog: ${blogToDelete.title}`)
 
       } catch(exception){
         setNotification('Failed to Delete')
@@ -56,7 +56,7 @@ const Blog = ({ blog, blogs, setBlogs, setNotification, handleLike }) => {
 
   return(
     <div style={blogStyle} >
-      <p className="blog-title">
+      <p className='blog-title'>
         {blog.title} by {blog.author}
         <button id='showinfo-button' onClick={() => setShowInfo(!showInfo)}>{changeLabel}</button>
       </p>
