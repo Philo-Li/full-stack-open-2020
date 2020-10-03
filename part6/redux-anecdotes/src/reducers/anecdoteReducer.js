@@ -30,7 +30,7 @@ export const addAnecdote = (content) => {
   }
 }
 
-export const voteTo = (id) => {
+export const voteAnecdote = (id) => {
   return {
     type: 'VOTE',
     data: id
