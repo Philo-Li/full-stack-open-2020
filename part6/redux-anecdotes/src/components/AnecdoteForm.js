@@ -3,7 +3,7 @@ import {addAnecdote, voteAnecdote} from '../reducers/anecdoteReducer'
 import { useSelector, useDispatch } from 'react-redux'
 
 const AnecdoteForm = () => {
-  const anecdotes = useSelector(state => state.sort((a, b) => b.votes - a.votes))
+  const anecdotes = useSelector(state => state.anecdotes.sort((a, b) => b.votes - a.votes))
   const dispatch = useDispatch()
 
   const createAnecdote = (event) => {
