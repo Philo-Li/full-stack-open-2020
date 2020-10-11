@@ -10,8 +10,8 @@ const AnecdoteList = () => {
   // console.log('filter', filter)
   const anecdotesToShow = !filter ? anecdotes : anecdotes.filter(anecdote => anecdote.content.toLowerCase().search(filter.toLowerCase()) !== -1)
   console.log(anecdotes)
-  const vote = (id) => {
-    dispatch(voteAnecdote(id))
+  const vote = (anecdote) => {
+    dispatch(voteAnecdote(anecdote))
   }
 
   setTimeout(() => {
@@ -27,7 +27,7 @@ const AnecdoteList = () => {
           </div>
           <div>
             has {anecdote.votes}
-            <button onClick={() => vote(anecdote.id)}>vote</button>
+            <button onClick={() => vote(anecdote)}>vote</button>
           </div>
         </div>
       )}

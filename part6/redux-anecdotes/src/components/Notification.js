@@ -5,7 +5,6 @@ const Notification = () => {
   const id = useSelector(state => state.notification)
   const anecdote = useSelector(state => state.anecdotes.find(n => n.id === id))
   if(!id) return null
-  
 
   const notification = `you voted '${anecdote.content}'`
   

@@ -10,7 +10,7 @@ export const notificationVote = (id) => {
 const notificationReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'VOTE':
-      return action.data
+      return action.data.id
     case 'HIDE_NOTIFICATION':
       return null
     default:
