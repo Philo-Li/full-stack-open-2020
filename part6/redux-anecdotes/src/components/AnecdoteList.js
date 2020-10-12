@@ -13,6 +13,7 @@ const AnecdoteList = (props) => {
   console.log(props.anecdotes)
   const vote = (anecdote) => {
     dispatch(voteAnecdote(anecdote))
+    clearTimeout(props.timeoutID)
     dispatch(setNotification(`you voted '${anecdote.content}'`, 10))
   }
 
@@ -38,7 +39,8 @@ const mapStateToProps = (state) => {
   console.log(state)
   return {
     anecdotes: state.anecdotes.sort((a, b) => b.votes - a.votes),
-    filter: state.filter
+    filter: state.filter,
+    timeoutID: state.timeoutID
   }
 }
 

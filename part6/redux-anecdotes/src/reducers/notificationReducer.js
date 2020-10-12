@@ -1,3 +1,5 @@
+import { setTimeoutID } from '../reducers/timeoutReducer'
+
 const initialState = null
 
 export const setNotification = (content, time) => {
@@ -6,9 +8,10 @@ export const setNotification = (content, time) => {
       type: 'VOTE_NOTIFICATION',
       data: content
     })
-    setTimeout(() => {
+    const timeoutID = setTimeout(() => {
       dispatch({ type: 'HIDE_NOTIFICATION' })
     }, time * 1000)
+    dispatch(setTimeoutID(timeoutID))
   }
 }
 
