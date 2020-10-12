@@ -1,16 +1,21 @@
 const initialState = null
 
-export const notificationVote = (id) => {
-  return {
-    type: 'VOTE',
-    data: id
+export const setNotification = (content, time) => {
+  return async dispatch => {
+    dispatch({
+      type: 'VOTE_NOTIFICATION',
+      data: content
+    })
+    setTimeout(() => {
+      dispatch({ type: 'HIDE_NOTIFICATION' })
+    }, time * 1000)
   }
 }
 
 const notificationReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'VOTE':
-      return action.data.id
+    case 'VOTE_NOTIFICATION':
+      return action.data
     case 'HIDE_NOTIFICATION':
       return null
     default:

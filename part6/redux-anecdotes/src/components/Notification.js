@@ -2,11 +2,8 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 
 const Notification = () => {
-  const id = useSelector(state => state.notification)
-  const anecdote = useSelector(state => state.anecdotes.find(n => n.id === id))
-  if(!id) return null
-
-  const notification = `you voted '${anecdote.content}'`
+  const notification = useSelector(state => state.notification)
+  if(!notification) return null
   
   const style = {
     border: 'solid',

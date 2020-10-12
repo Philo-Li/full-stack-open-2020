@@ -1,7 +1,6 @@
 import React from 'react'
 import {addAnecdote} from '../reducers/anecdoteReducer'
 import { useSelector, useDispatch } from 'react-redux'
-import anecdotesService from '../services/anecdotes'
 
 const AnecdoteForm = () => {
   const anecdotes = useSelector(state => state.anecdotes.sort((a, b) => b.votes - a.votes))
