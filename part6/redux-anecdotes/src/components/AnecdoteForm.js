@@ -1,9 +1,10 @@
 import React from 'react'
 import {addAnecdote} from '../reducers/anecdoteReducer'
 import { useSelector, useDispatch } from 'react-redux'
+import { connect } from 'react-redux'
 
 const AnecdoteForm = () => {
-  const anecdotes = useSelector(state => state.anecdotes.sort((a, b) => b.votes - a.votes))
+  // const anecdotes = useSelector(state => state.anecdotes.sort((a, b) => b.votes - a.votes))
   const dispatch = useDispatch()
 
   const createAnecdote = async (event) => {
@@ -24,4 +25,14 @@ const AnecdoteForm = () => {
   )
 }
 
-export default AnecdoteForm
+const mapStateToProps = (state) => {
+  // sometimes it is useful to console log from mapStateToProps
+  console.log(state)
+  return {
+    anecdotes: state.anecdotes.sort((a, b) => b.votes - a.votes),
+  }
+}
+
+const ConnectedAnecdotes = connect(mapStateToProps)(AnecdoteForm)
+
+export default ConnectedAnecdotes

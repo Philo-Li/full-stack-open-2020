@@ -7,10 +7,9 @@ import { connect } from 'react-redux'
 const AnecdoteList = (props) => {
   const dispatch = useDispatch()
   // const anecdotes = useSelector(state => state.anecdotes.sort((a, b) => b.votes - a.votes))
+  // const filter = useSelector(state => state.filter)
 
-  const filter = useSelector(state => state.filter)
-
-  const anecdotesToShow = !filter ? props.anecdotes : props.anecdotes.filter(anecdote => anecdote.content.toLowerCase().search(filter.toLowerCase()) !== -1)
+  const anecdotesToShow = !props.filter ? props.anecdotes : props.anecdotes.filter(anecdote => anecdote.content.toLowerCase().search(props.filter.toLowerCase()) !== -1)
   console.log(props.anecdotes)
   const vote = (anecdote) => {
     dispatch(voteAnecdote(anecdote))

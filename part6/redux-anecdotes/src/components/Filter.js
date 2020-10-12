@@ -1,6 +1,7 @@
 import React from 'react'
 import { setFilter } from '../reducers/filterReducer'
 import { useDispatch } from 'react-redux'
+import { connect } from 'react-redux'
 
 const Filter = () => {
   const dispatch = useDispatch()
@@ -24,4 +25,6 @@ const Filter = () => {
   )
 }
 
-export default Filter
+const ConnectedAnecdotes = connect(null)(Filter)
+
+export default ConnectedAnecdotes
