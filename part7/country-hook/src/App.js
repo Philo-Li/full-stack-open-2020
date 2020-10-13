@@ -20,12 +20,10 @@ const useCountry = (name) => {
 
   useEffect(() => {
     const url = `https://restcountries.eu/rest/v2/name/${name}?fullText=true`
-    const CancelToken = axios.CancelToken
-    const source = CancelToken.source()
 
     const getCountry = async () => {
       try {
-        const response = await axios.get(url, { cancelToken: source.token })
+        const response = await axios.get(url)
         setCountry({ found: true, data: response.data[0] })
       } catch (e) {
         setCountry({ found: false, data: {} })
@@ -33,11 +31,6 @@ const useCountry = (name) => {
     }
 
     getCountry()
-    console.log('source', source)
-
-    return () => {
-      source.cancel()
-    }
   }, [name])
 
   console.log('country', country)
@@ -83,7 +76,7 @@ const App = () => {
     <div>
       <form onSubmit={fetch}>
         <input {...nameInput} />
-        <button type='submit'>find</button>
+        <button>find</button>
       </form>
 
       <Country country={country} />
