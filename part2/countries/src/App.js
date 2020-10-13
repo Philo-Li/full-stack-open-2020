@@ -12,9 +12,9 @@ const App = () => {
     countriesService
     .getAllCountries()
     .then(data => {
-      setCountries(data);
-    });
-  }, []);
+      setCountries(data)
+    })
+  }, [])
 
   const handleFilterChange = (event) => {
     console.log(event.target.value)
