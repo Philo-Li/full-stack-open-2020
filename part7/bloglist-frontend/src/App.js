@@ -1,12 +1,23 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import {
+  BrowserRouter as Router,
+  Switch, Route, Link,
+  useParams, useHistory
+} from 'react-router-dom'
+
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import Footer from './components/Footer'
 import LoginForm from './components/LoginForm'
 import LoggedInForm from './components/LoggedInForm'
+import UsersForm from './components/UsersForm'
+
 import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUser } from './reducers/userReducer'
+import { getAllUsers } from './reducers/usersReducer'
+
+import { logout } from './reducers/userReducer'
 
 const App = () => {
   const user = useSelector(state => state.user)
@@ -15,6 +26,7 @@ const App = () => {
   useEffect(() => {
     dispatch(initializeBlogs())
     dispatch(initializeUser())
+    dispatch(getAllUsers())
   }, [dispatch])
 
   const loginForm = () => (
@@ -23,15 +35,50 @@ const App = () => {
     </Togglable>
   )
 
+
+
+  const Menu = () => {
+    const handleLogout = async(event) => {
+      event.preventDefault()
+      dispatch(logout())
+    }
+    if(!user) return null
+    return (
+      <div>
+        <p>{user.name} logged-in
+          <button type='submit' onClick={handleLogout} >logout</button>
+        </p>
+      </div>
+    )
+  }
+
   return (
-    <div>
-      <h2>blogs</h2>
-      <Notification />
-      {user === null ?
-        loginForm() : <LoggedInForm />
-      }
-      <Footer />
-    </div>
+    <Router>
+      <div>
+        <h2>blogs</h2>
+        <Menu />
+        <Notification />
+        <div>
+          <Switch>
+            {/* <Route path="/anecdotes/:id">
+              <Anecdote anecdotes={anecdotes}/>
+            </Route>
+            <Route path='/create'>
+              <CreateNew addNew={addNew} />
+            </Route> */}
+            <Route path='/users'>
+              <UsersForm />
+            </Route>
+            <Route path='/'>
+              {user === null ?
+                loginForm() : <LoggedInForm />
+              }
+            </Route>
+          </Switch>
+        </div>
+        <Footer />
+      </div>
+    </Router>
   )
 }
 
