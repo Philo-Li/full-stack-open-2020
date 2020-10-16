@@ -12,6 +12,7 @@ import Footer from './components/Footer'
 import LoginForm from './components/LoginForm'
 import LoggedInForm from './components/LoggedInForm'
 import UsersForm from './components/UsersForm'
+import UserForm from './components/UserForm'
 
 import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUser } from './reducers/userReducer'
@@ -62,10 +63,10 @@ const App = () => {
           <Switch>
             {/* <Route path="/anecdotes/:id">
               <Anecdote anecdotes={anecdotes}/>
-            </Route>
-            <Route path='/create'>
-              <CreateNew addNew={addNew} />
             </Route> */}
+            <Route path='/users/:id'>
+              <UserForm />
+            </Route>
             <Route path='/users'>
               <UsersForm />
             </Route>
