@@ -69,9 +69,9 @@ const Footer = () => (
 )
 
 const Input = props => {
-  const { reset, ...other } = props;
-  return <input {...other} />;
-};
+  const { reset, ...other } = props
+  return <input {...other} />
+}
 
 const CreateNew = (props) => {
   const content = useField('content')

@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
+import { useDispatch } from 'react-redux'
+import { setNotification } from '../reducers/notificationReducer'
 
 
-const Blog = ({ blog, blogs, setBlogs, setNotification, handleLike }) => {
+const Blog = ({ blog, blogs, setBlogs, handleLike }) => {
   const [showInfo, setShowInfo] = useState(false)
+  const dispatch = useDispatch()
 
   const blogStyle = {
     paddingTop: 10,
@@ -27,14 +30,11 @@ const Blog = ({ blog, blogs, setBlogs, setNotification, handleLike }) => {
 
         setBlogs(changedBlogs)
 
-        setNotification(`Deleted Blog: ${blogToDelete.title}`)
+        dispatch(setNotification(`Deleted Blog: ${blogToDelete.title}`, 5))
 
       } catch(exception){
-        setNotification('Failed to Delete')
+        dispatch(setNotification('Failed to Delete', 5))
       }
-      setTimeout(() => {
-        setNotification(null)
-      }, 5000)
     }
   }
 

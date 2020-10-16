@@ -2,16 +2,14 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
-// import anecdoteReducer from './reducers/anecdoteReducer'
+import blogReducer from './reducers/blogReducer'
 import notificationReducer from './reducers/notificationReducer'
-import timeoutReducer from './reducers/timeoutReducer'
-// import filterReducer from './reducers/filterReducer'
+import userReducer from './reducers/userReducer'
 
 const reducer = combineReducers({
-  // anecdotes: anecdoteReducer,
-  // filter: filterReducer,
-  notification: notificationReducer,
-  timeoutID: timeoutReducer,
+  blogs: blogReducer,
+  user: userReducer,
+  notification: notificationReducer
 })
 
 const store = createStore(
