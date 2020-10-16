@@ -6,11 +6,9 @@ import Togglable from './components/Togglable'
 import Footer from './components/Footer'
 import LoginForm from './components/LoginForm'
 import CreateBlogForm from './components/CreateBlogForm'
-import blogService from './services/blogs'
 
 import { initializeBlogs } from './reducers/blogReducer'
-import { setUser } from './reducers/userReducer'
-
+import { initializeUser, logout } from './reducers/userReducer'
 
 const App = () => {
   const user = useSelector(state => state.user)
@@ -19,31 +17,17 @@ const App = () => {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(initializeBlogs())
+    dispatch(initializeUser())
   }, [dispatch])
 
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      dispatch(setUser(user))
-      blogService.setToken(user.token)
-    }
-  }, [])
-
-  const handleLogout = async(event) => {
-    event.preventDefault()
-    window.localStorage.removeItem('loggedBlogappUser')
-    dispatch({ type: 'CLEAR_USER' })
-  }
-
   const loginForm = () => (
-    <Togglable id='login' buttonLabel='login' ref={blogFormRef}>
+    <Togglable id='login' buttonLabel='login'>
       <LoginForm />
     </Togglable>
   )
 
   const blogFormRef = useRef()
-  const blogForm = () => (
+  const createBlogForm = () => (
     <Togglable id='create-blog' buttonLabel='new blog' ref={blogFormRef}>
       <CreateBlogForm blogFormRef={blogFormRef}/>
     </Togglable>
@@ -59,12 +43,17 @@ const App = () => {
     </div>
   )
 
+  const handleLogout = async(event) => {
+    event.preventDefault()
+    dispatch(logout)
+  }
+
   const loggedInForm = () => (
     <div>
       <p>{user.name} logged-in
         <button type='submit' onClick={handleLogout} >logout</button>
       </p>
-      {blogForm()}
+      {createBlogForm()}
       {detailForm()}
     </div>
   )
@@ -73,9 +62,7 @@ const App = () => {
     <div>
       <h2>blogs</h2>
       <Notification />
-
       {user === null ? loginForm() : loggedInForm()}
-
       <Footer />
     </div>
   )

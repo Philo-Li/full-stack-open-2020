@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
-import blogService from '../services/blogs'
 import { useDispatch } from 'react-redux'
 import { setNotification } from '../reducers/notificationReducer'
 import { likeBlog, deleteBlog } from '../reducers/blogReducer'
-
 
 const Blog = ({ blog }) => {
   const [showInfo, setShowInfo] = useState(false)
@@ -33,16 +31,8 @@ const Blog = ({ blog }) => {
     const answer = window.confirm(`Delete Blog ${blogToDelete.title}?`)
     if(answer){
       try {
-        // const id = blogToDelete.id
-        // const changedBlogs = blogs.filter(blog => blog.id !== id)
-
-        // await blogService.deleteBlog(blogToDelete)
-
-        // setBlogs(changedBlogs)
         dispatch(deleteBlog(blog))
-
         dispatch(setNotification(`Deleted Blog: ${blogToDelete.title}`, 5))
-
       } catch(exception){
         dispatch(setNotification('Failed to Delete', 5))
       }
