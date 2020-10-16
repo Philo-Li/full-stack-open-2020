@@ -25,7 +25,6 @@ const CreateBlogForm = ({ blogFormRef }) => {
       }
 
       dispatch(addBlog(blogObject))
-
       dispatch(setNotification(`a new blog ${newTitle.value} by ${newAuthor.value} added`, 5))
 
     } catch(exception){

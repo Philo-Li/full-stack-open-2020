@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef  } from 'react'
+import React, { useEffect, useRef  } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
@@ -7,9 +7,9 @@ import Footer from './components/Footer'
 import LoginForm from './components/LoginForm'
 import CreateBlogForm from './components/CreateBlogForm'
 import blogService from './services/blogs'
-import loginService from './services/login'
 
 import { initializeBlogs } from './reducers/blogReducer'
+import { setUser } from './reducers/userReducer'
 
 
 const App = () => {
@@ -25,25 +25,10 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
+      dispatch(setUser(user))
       blogService.setToken(user.token)
     }
   }, [])
-
-  // const handleLike = async(id) => {
-  //   try {
-  //     const blog = blogs.find(n => n.id === id)
-  //     const changedBlog = { ...blog, likes: blog.likes + 1 }
-
-  //     await blogService.update(changedBlog)
-
-  //     blogs.sort((a, b) => b.likes - a.likes - 1)
-  //     setBlogs(blogs.map(blog => blog.id !== id ? blog : changedBlog))
-
-  //     dispatch(setNotification(`Blog ${blog.title} likes + 1`, 5))
-  //   } catch(exception){
-  //     dispatch(setNotification('Failed to like', 5))
-  //   }
-  // }
 
   const handleLogout = async(event) => {
     event.preventDefault()
@@ -68,9 +53,7 @@ const App = () => {
     <div>
       <ul>
         {blogs.map((blog) =>
-          <Blog key={blog.id}
-            blog={blog}
-            blogs={blogs}/>
+          <Blog key={blog.id} blog={blog}/>
         )}
       </ul>
     </div>
@@ -79,7 +62,7 @@ const App = () => {
   const loggedInForm = () => (
     <div>
       <p>{user.name} logged-in
-        <button type="submit" onClick={handleLogout} >logout</button>
+        <button type='submit' onClick={handleLogout} >logout</button>
       </p>
       {blogForm()}
       {detailForm()}

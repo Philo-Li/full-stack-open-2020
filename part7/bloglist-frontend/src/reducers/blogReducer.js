@@ -21,16 +21,26 @@ export const addBlog = (content) => {
   }
 }
 
-// export const voteAnecdote = (anecdote) => {
-//   return async dispatch => {
-//     const changedAnecdote = {...anecdote, votes: anecdote.votes + 1}
-//     await anecdotesService.updateVote(changedAnecdote)
-//     dispatch({
-//       type: 'VOTE',
-//       data: changedAnecdote
-//     })
-//   }
-// }
+export const likeBlog = (blog) => {
+  return async dispatch => {
+    const changedBlog = { ...blog, likes: blog.likes + 1 }
+    await blogService.update(changedBlog)
+    dispatch({
+      type: 'LIKE',
+      data: changedBlog
+    })
+  }
+}
+
+export const deleteBlog = (blogToDelete) => {
+  return async dispatch => {
+    await blogService.deleteBlog(blogToDelete)
+    dispatch({
+      type: 'DELETE',
+      data: blogToDelete
+    })
+  }
+}
 
 const blogReducer = (state = [], action) => {
   console.log('state now: ', state)
@@ -40,6 +50,8 @@ const blogReducer = (state = [], action) => {
     return [...state, action.data]
   case 'LIKE':
     return state.map(blog => blog.id !== action.data.id ? blog : action.data )
+  case 'DELETE':
+    return state.filter(blog => blog.id !== action.data.id )
   case 'INIT_BLOG':
     return action.data
   default:
