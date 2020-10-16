@@ -1,10 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import {
-  BrowserRouter as Router,
-  Switch, Route, Link,
-  useParams
-} from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 const UserForm = () => {
   const users = useSelector(state => state.users)

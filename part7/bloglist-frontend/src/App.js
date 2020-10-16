@@ -2,8 +2,7 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   BrowserRouter as Router,
-  Switch, Route, Link,
-  useParams, useHistory
+  Switch, Route
 } from 'react-router-dom'
 
 import Notification from './components/Notification'
@@ -13,6 +12,7 @@ import LoginForm from './components/LoginForm'
 import LoggedInForm from './components/LoggedInForm'
 import UsersForm from './components/UsersForm'
 import UserForm from './components/UserForm'
+import Blog from './components/Blog'
 
 import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUser } from './reducers/userReducer'
@@ -35,8 +35,6 @@ const App = () => {
       <LoginForm />
     </Togglable>
   )
-
-
 
   const Menu = () => {
     const handleLogout = async(event) => {
@@ -61,9 +59,9 @@ const App = () => {
         <Notification />
         <div>
           <Switch>
-            {/* <Route path="/anecdotes/:id">
-              <Anecdote anecdotes={anecdotes}/>
-            </Route> */}
+            <Route path="/blogs/:id">
+              <Blog />
+            </Route>
             <Route path='/users/:id'>
               <UserForm />
             </Route>
