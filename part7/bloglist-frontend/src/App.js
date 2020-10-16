@@ -37,6 +37,9 @@ const App = () => {
   )
 
   const Menu = () => {
+    const padding = {
+      paddingRight: 5
+    }
     const handleLogout = async(event) => {
       event.preventDefault()
       dispatch(logout())
@@ -44,9 +47,11 @@ const App = () => {
     if(!user) return null
     return (
       <div>
-        <p>{user.name} logged-in
+        <a href='/blogs' style={padding}>blogs</a>
+        <a href='/users' style={padding}>users</a>
+        <a>{user.name} logged-in
           <button type='submit' onClick={handleLogout} >logout</button>
-        </p>
+        </a>
       </div>
     )
   }
@@ -54,8 +59,8 @@ const App = () => {
   return (
     <Router>
       <div>
-        <h2>blogs</h2>
         <Menu />
+        <h2>blogs</h2>
         <Notification />
         <div>
           <Switch>
