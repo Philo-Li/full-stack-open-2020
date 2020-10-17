@@ -2,11 +2,12 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   BrowserRouter as Router,
-  Switch, Route
+  Switch, Route, Link
 } from 'react-router-dom'
+import { Nav, Button } from 'react-bootstrap'
+import Navbar from 'react-bootstrap/Navbar'
 
 import Notification from './components/Notification'
-import Togglable from './components/Togglable'
 import Footer from './components/Footer'
 import LoginForm from './components/LoginForm'
 import LoggedInForm from './components/LoggedInForm'
@@ -30,12 +31,6 @@ const App = () => {
     dispatch(getAllUsers())
   }, [dispatch])
 
-  const loginForm = () => (
-    <Togglable id='login' buttonLabel='login'>
-      <LoginForm />
-    </Togglable>
-  )
-
   const Menu = () => {
     const padding = {
       paddingRight: 5
@@ -46,19 +41,36 @@ const App = () => {
     }
     if(!user) return null
     return (
-      <div>
-        <a href='/blogs' style={padding}>blogs</a>
-        <a href='/users' style={padding}>users</a>
-        <a>{user.name} logged-in
-          <button type='submit' onClick={handleLogout} >logout</button>
-        </a>
-      </div>
+      // <div>
+      //   <a href='/blogs' style={padding}>blogs</a>
+      //   <a href='/users' style={padding}>users</a>
+      //   <a>{user.name} logged-in
+      //     <button type='submit' onClick={handleLogout} >logout</button>
+      //   </a>
+      // </div>
+      <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="mr-auto">
+            <Nav.Link href="/" as="span">
+              <Link style={padding} to="/">home</Link>
+            </Nav.Link>
+            <Nav.Link href="/blogs" as="span">
+              <Link style={padding} to="/blogs">blogs</Link>
+            </Nav.Link>
+            <Nav.Link href="/users" as="span">
+              <Link style={padding} to="/users">users</Link>
+            </Nav.Link>
+            <Button variant='secondary' type='submit' onClick={handleLogout} >logout</Button>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
     )
   }
 
   return (
     <Router>
-      <div>
+      <div className='container'>
         <Menu />
         <h2>blogs</h2>
         <Notification />
@@ -75,7 +87,7 @@ const App = () => {
             </Route>
             <Route path='/'>
               {user === null ?
-                loginForm() : <LoggedInForm />
+                <LoginForm /> : <LoggedInForm />
               }
             </Route>
           </Switch>

@@ -1,6 +1,7 @@
 import React, { useRef  } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { Table } from 'react-bootstrap'
 import Togglable from './Togglable'
 import CreateBlogForm from './CreateBlogForm'
 
@@ -14,22 +15,24 @@ const LoggedinForm = () => {
     </Togglable>
   )
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
-  }
-
   return (
     <div>
       {createBlogForm()}
       <div>
-        {blogs.map(blog =>
-          <div key={blog.id} style={blogStyle}>
-            <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
-          </div>)}
+        <Table striped>
+          <tbody>
+            {blogs.map(blog =>
+              <tr key={blog.id}>
+                <td>
+                  <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+                </td>
+                <td>
+                  {blog.user.name}
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </Table>
       </div>
     </div>
   )

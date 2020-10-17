@@ -1,5 +1,6 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
+import { Form, Button } from 'react-bootstrap'
 import  { useField } from '../hooks'
 import blogService from '../services/blogs'
 import loginService from '../services/login'
@@ -37,17 +38,19 @@ const LoginForm = () => {
   return (
     <div>
       <h2>Login</h2>
-      <form id='loginform' onSubmit={handleLogin}>
-        <div>
-          username
-          <input {...username}/>
-        </div>
-        <div>
-          password
-          <input {...password}/>
-        </div>
-        <button id='login-button' type='submit'>login</button>
-      </form>
+      <Form id='loginform' onSubmit={handleLogin}>
+        <Form.Group>
+          <div>
+            <Form.Label>username:</Form.Label>
+            <Form.Control {...username}/>
+          </div>
+          <div>
+            <Form.Label>password:</Form.Label>
+            <Form.Control {...password}/>
+          </div>
+          <Button variant='primary' id='login-button' type='submit'>login</Button>
+        </Form.Group>
+      </Form>
     </div>
   )
 }

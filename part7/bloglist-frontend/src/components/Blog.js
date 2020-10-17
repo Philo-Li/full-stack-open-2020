@@ -1,5 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { Button } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import  { useField } from '../hooks'
 import { setNotification } from '../reducers/notificationReducer'
@@ -55,7 +56,7 @@ const Blog = () => {
       <a href={blog.url}>{blog.url}</a>
       <div>
         {blog.likes} likes
-        <button id='like-button' onClick={() => handleLike(blog)}>like</button>
+        <Button variant='info' id='like-button' onClick={() => handleLike(blog)}>like</Button>
       </div>
       <div>added by {blog.user.name}</div>
       {/* <button id='remove-button' style={buttonStyle} onClick={() => handleDelete(blog)}>Remove</button> */}
@@ -64,7 +65,7 @@ const Blog = () => {
         <div>
           <input {...newComment}/>
         </div>
-        <button id='comment-button' type='submit'>add comment</button>
+        <Button variant='primary' id='comment-button' type='submit'>add comment</Button>
       </form>
       <div>
         {blog.comments.map((comment) =>
