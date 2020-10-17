@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Button } from 'react-bootstrap'
+import { Button, Card, ListGroup } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import  { useField } from '../hooks'
 import { setNotification } from '../reducers/notificationReducer'
@@ -52,28 +52,36 @@ const Blog = () => {
 
   return(
     <div>
-      <h2>{blog.title}</h2>
-      <a href={blog.url}>{blog.url}</a>
-      <div>
-        {blog.likes} likes
-        <Button variant='info' id='like-button' onClick={() => handleLike(blog)}>like</Button>
-      </div>
-      <div>added by {blog.user.name}</div>
+      <Card>
+        <Card.Body>
+          <Card.Title>{blog.title}</Card.Title>
+          <a href={blog.url}>{blog.url}</a>
+          <div>
+            {blog.likes} likes
+            <Button variant='info' id='like-button' onClick={() => handleLike(blog)}>like</Button>
+          </div>
+          <div>added by {blog.user.name}</div>
+        </Card.Body>
+      </Card>
       {/* <button id='remove-button' style={buttonStyle} onClick={() => handleDelete(blog)}>Remove</button> */}
-      <h3>comments</h3>
-      <form id='comemntform' onSubmit={handleComment}>
-        <div>
-          <input {...newComment}/>
-        </div>
-        <Button variant='primary' id='comment-button' type='submit'>add comment</Button>
-      </form>
-      <div>
-        {blog.comments.map((comment) =>
-          <li key={comment}>
-            {comment}
-          </li>
-        )}
-      </div>
+      <Card>
+        <Card.Body>
+          <Card.Title>comments</Card.Title>
+          <form id='comemntform' onSubmit={handleComment}>
+            <div>
+              <input {...newComment}/>
+              <Button variant='primary' id='comment-button' type='submit'>add comment</Button>
+            </div>
+          </form>
+          <ListGroup>
+            {blog.comments.map((comment) =>
+              <ListGroup.Item key={comment}>
+                {comment}
+              </ListGroup.Item>
+            )}
+          </ListGroup>
+        </Card.Body>
+      </Card>
     </div>
   )}
 
