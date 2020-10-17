@@ -47,6 +47,14 @@ const Blog = () => {
       </div>
       <div>added by {blog.user.name}</div>
       {/* <button id='remove-button' style={buttonStyle} onClick={() => handleDelete(blog)}>Remove</button> */}
+      <h3>comments</h3>
+      <div>
+        {blog.comments.map((comment) =>
+          <li key={comment}>
+            {comment}
+          </li>
+        )}
+      </div>
     </div>
   )}
 

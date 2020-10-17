@@ -2,6 +2,7 @@ const blogsRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const Comment = require('../models/comment')
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog
@@ -10,7 +11,7 @@ blogsRouter.get('/', async (request, response) => {
   response.json(blogs.map((blog) => blog.toJSON()))
 })
 
-blogsRouter.post('/', async (request, response, next) => {
+blogsRouter.post('/', async (request, response) => {
   const body = request.body
   const decodedToken = jwt.verify(request.token, process.env.SECRET)
   const user = await User.findById(decodedToken.id)
@@ -24,6 +25,7 @@ blogsRouter.post('/', async (request, response, next) => {
     author: body.author,
     url: body.url,
     likes: body.likes ? body.likes : 0,
+    comments: body.comments,
     user: user._id
   })
 
@@ -33,6 +35,16 @@ blogsRouter.post('/', async (request, response, next) => {
   await user.save()
 
   response.json(savedBlog)
+})
+
+blogsRouter.post('/:id/comments', async (request, response) => {
+  const body = request.body
+  const blog = await Blog.findById(request.params.id)
+  
+  blog.comments = blog.comments.concat(body.comments)
+  const updatedBlog = await blog.save()
+
+  response.json(updatedBlog.toJSON())
 })
 
 blogsRouter.put('/:id', async (request, response) => {

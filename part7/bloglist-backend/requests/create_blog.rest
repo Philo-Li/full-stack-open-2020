@@ -1,11 +1,13 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ikg0MjM1MjN0cnlyNDYzIiwiaWQiOiI1ZjY2YjgyNWI5NWFjNTMwYzA4ZDM0ODciLCJpYXQiOjE2MDA1Njk4MzZ9.WDnn8H1YzBy0OI1LDjP1KlDN3Z5t3Dja7KAwAgj9V2A
+# Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ikg0MjM1MjN0cnlyNDYzIiwiaWQiOiI1ZjY2YjgyNWI5NWFjNTMwYzA4ZDM0ODciLCJpYXQiOjE2MDA1Njk4MzZ9.WDnn8H1YzBy0OI1LDjP1KlDN3Z5t3Dja7KAwAgj9V2A
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjVmNjZmNWExZDJkNmIyMjUzODJkMWQwNiIsImlhdCI6MTYwMjg5ODMwMX0.UBStm2x1lx3krd_MajMYGhTHmV7OUUnpu8wYi2OkzXo
 
 {
-  "title": "Hello Mike3",
+  "title": "Hello Mike6",
   "author": "mlmaihi",
   "url": "https://lulalap.com",
-  "likes": 1
+  "likes": 5,
+  "comments": ["First comment", "Second comment"]
 }
 
