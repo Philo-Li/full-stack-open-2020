@@ -1,13 +1,15 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import  { useField } from '../hooks'
 import { setNotification } from '../reducers/notificationReducer'
-import { likeBlog, deleteBlog } from '../reducers/blogReducer'
+import { likeBlog, addComment, deleteBlog } from '../reducers/blogReducer'
 
 const Blog = () => {
   const dispatch = useDispatch()
   const blogs = useSelector(state => state.blogs)
   const id = useParams().id
+  const newComment = useField('newComment')
   if(!blogs) return null
 
   const blog = blogs.find(a => String(a.id) === String(id))
@@ -37,6 +39,16 @@ const Blog = () => {
   //   }
   // }
 
+  const handleComment = async(event) => {
+    event.preventDefault()
+    try {
+      dispatch(addComment(blog, newComment.value))
+      dispatch(setNotification(`a new comemnt ${newComment.value} added`, 5))
+    } catch(exception){
+      dispatch(setNotification('Failed to add new blog', 5))
+    }
+  }
+
   return(
     <div>
       <h2>{blog.title}</h2>
@@ -48,6 +60,12 @@ const Blog = () => {
       <div>added by {blog.user.name}</div>
       {/* <button id='remove-button' style={buttonStyle} onClick={() => handleDelete(blog)}>Remove</button> */}
       <h3>comments</h3>
+      <form id='comemntform' onSubmit={handleComment}>
+        <div>
+          <input {...newComment}/>
+        </div>
+        <button id='comment-button' type='submit'>add comment</button>
+      </form>
       <div>
         {blog.comments.map((comment) =>
           <li key={comment}>
