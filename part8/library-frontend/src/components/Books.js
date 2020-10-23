@@ -1,10 +1,15 @@
-import React, { useState } from 'react'
-import { useQuery } from '@apollo/client'
-import { ALL_BOOKS } from '../queries'
+import React, { useState, useEffect } from 'react'
+import { useQuery,useLazyQuery } from '@apollo/client'
+import { ALL_BOOKS, FIND_BOOKS_BY_GENRE } from '../queries'
 
 const Books = (props) => {
-  const [select, setSelect] = useState(null)
+  const [select, setSelect] = useState('')
   const { loading, error, data } = useQuery(ALL_BOOKS)
+  const [getBooks, result] = useLazyQuery(FIND_BOOKS_BY_GENRE)
+
+  useEffect(() => {
+    getBooks({ variables: { genreToSearch: String(select) } })
+  }, [select])
 
   if (!props.show) {
     return null
@@ -14,9 +19,11 @@ const Books = (props) => {
   if (error) return `Error! ${error.message}`
 
   const books = data.allBooks
-  let booksToShow = select ? books.filter((book) => book.genres.includes(select) === true) : books
+  let booksToShow = result.data ? result.data.allBooks : books
 
   console.log(books)
+  console.log('select', select)
+  console.log('result', result.data)
 
   let allGenres = []
 
@@ -24,7 +31,6 @@ const Books = (props) => {
     book.genres.map((genre) => {
       if(!allGenres.includes(genre)){
         allGenres = [...allGenres, genre]
-        console.log(genre, allGenres)
       }
     })
   })
@@ -57,10 +63,11 @@ const Books = (props) => {
           )}
         </tbody>
       </table>
+      {/* {select ? <Book select={select}></Book> : null} */}
       {allGenres.map(a => 
         <button key={a} onClick={() => setSelect(a)}>{a}</button>
       )}
-      <button key='allGenres' onClick={() => setSelect(null)}>all genres</button>
+      <button key='allGenres' onClick={() => setSelect('')}>all genres</button>
     </div>
   )
 }
