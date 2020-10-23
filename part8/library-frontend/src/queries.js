@@ -60,6 +60,8 @@ export const ADD_BOOK = gql`
         name
         born
       }
+      published
+      genres
     }
   }
 `

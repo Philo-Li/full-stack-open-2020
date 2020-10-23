@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { useMutation } from '@apollo/client'
-import { ADD_BOOK, ALL_BOOKS, ALL_AUTHORS } from '../queries'
+import { useMutation, useQuery } from '@apollo/client'
+import { USER, ADD_BOOK, FIND_BOOKS_BY_GENRE, ALL_AUTHORS } from '../queries'
 
 const NewBook = (props) => {
   const [title, setTitle] = useState('')
@@ -8,9 +8,30 @@ const NewBook = (props) => {
   const [published, setPublished] = useState('')
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
+  const user = useQuery(USER)
 
   const [ createBook, { loading, error, data } ] = useMutation(ADD_BOOK, {
-    refetchQueries: [ { query: ALL_BOOKS, }, {query: ALL_AUTHORS } ]
+    update: (store, response) => {
+      const dataInStoreBooks = store.readQuery({ query: FIND_BOOKS_BY_GENRE, variables: { genreToSearch: '' } })
+      // console.log('dataInStoreBooks1', dataInStoreBooks, response)
+      store.writeQuery({
+        query: FIND_BOOKS_BY_GENRE,
+        variables: { genreToSearch: '' },
+        data:  {
+          allBooks: [ ...dataInStoreBooks.allBooks, response.data.addBook ]
+        }
+      })
+      const favoriteGenre = String(user.data.me.favoriteGenre)
+      const dataInStoreRecommend = store.readQuery({ query: FIND_BOOKS_BY_GENRE, variables: { genreToSearch: favoriteGenre } })
+      // console.log('dataInStoreRecommend1', dataInStoreRecommend, response)
+      store.writeQuery({
+        query: FIND_BOOKS_BY_GENRE,
+        variables: { genreToSearch: favoriteGenre },
+        data:  {
+          allBooks: [ ...dataInStoreRecommend.allBooks, response.data.addBook ]
+        }
+      })
+    }
   })
 
   if (loading) return 'Loading...'
