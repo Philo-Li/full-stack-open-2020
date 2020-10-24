@@ -33,6 +33,7 @@ const typeDefs = gql`
   type Author {
     name: String!
     born: Int
+    bookByAuthor:[Book]!
     bookCount: Int!
   }
   type User {
@@ -102,9 +103,8 @@ const resolvers = {
   },
   Author: {
     bookCount: async(root) => {
-      const books = await Book.find({}).populate('author', { name: 1, born: 1 })
-      const booksByAuthor = books.filter((book) => String(book.author.name) === String(root.name))
-      return booksByAuthor.length
+      console.log('root.bookByAuthor:', root.bookByAuthor)
+      return root.bookByAuthor.length
     }
   },
   Mutation: {
@@ -117,9 +117,12 @@ const resolvers = {
         author = new Author({ name: args.author })
         await author.save()
       }
+      console.log(author)
       const book = new Book({ ...args, author: author._id, id: uuid() })
+      author.bookByAuthor = [...author.bookByAuthor, book._id]
       try {
         await book.save()
+        await author.save()
       } catch (error) {
         throw new UserInputError(error.message, {
           invalidArgs: args,
