@@ -42,6 +42,8 @@ const typeDefs = gql`
   }
   type Token {
     value: String!
+    username: String!
+    favoriteGenre: String!
   }
   type Query {
     bookCount: Int!
@@ -168,7 +170,13 @@ const resolvers = {
         id: user._id,
       }
 
-      return { value: jwt.sign(userForToken, JWT_SECRET) }
+      const result = {
+        value: jwt.sign(userForToken, JWT_SECRET),
+        username: user.username,
+        favoriteGenre: user.favoriteGenre
+      }
+
+      return result
     },
   },
   Subscription: {
