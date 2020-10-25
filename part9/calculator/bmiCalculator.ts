@@ -1,7 +1,7 @@
 const calculateBmi = (height: number, mass: number): string => {
-  const changedHeight = (height/100)**2
-  const bmi = mass/changedHeight
-  console.log('height', height, 'mass', mass, 'bmi', bmi)
+  const changedHeight = (height/100)**2;
+  const bmi = mass/changedHeight;
+  console.log('height', height, 'mass', mass, 'bmi', bmi);
   if(isNaN(Number(bmi))){
     throw new Error('malformatted parameters');
   }else if (bmi < 18.5) {
@@ -13,7 +13,7 @@ const calculateBmi = (height: number, mass: number): string => {
   }else{
     return 'obese';
   }
-}
+};
 
 // console.log(calculateBmi(180, 74));
 
@@ -22,4 +22,4 @@ const calculateBmi = (height: number, mass: number): string => {
 
 // console.log(calculateBmi(height, mass));
 
-export {calculateBmi}
+export { calculateBmi };

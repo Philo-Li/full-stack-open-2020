@@ -1,11 +1,11 @@
-type Result = { 
+type Result = {
   periodLength: number,
   trainingDays: number,
   success: boolean,
   rating: number,
   ratingDescription: string,
   target: number,
-  average: number 
+  average: number
 };
 
 interface CalculateValues {
@@ -15,46 +15,46 @@ interface CalculateValues {
 
 const parseArguments = (args: Array<string>): CalculateValues => {
   if (args.length < 4) throw new Error('Not enough arguments');
-  let [a, b, target, ...temp] = args
-  console.log('target', target, 'temp', temp)
+  const [a, b, target, ...temp] = args;
+  console.log(a, b, 'target', target, 'temp', temp);
 
   const data = temp.map(a => {
     if(isNaN(Number(a))){
       throw new Error('Provided values were not numbers!');
     }
-    return Number(a)
-  })
-  
+    return Number(a);
+  });
+
   return {
     target: Number(args[2]),
     data: data.slice(1)
-  }
-}
+  };
+};
 
 const calculateExercises = (target: number, data: Array<number>): Result => {
   const periodLength = data.length;
-  let trainingDays = 0, rating, ratingDescription, average = 0;
-  let failDays = 0
+  let trainingDays = 0, ratingDescription, average = 0;
+  let failDays = 0;
 
-  for(let day of data) {
+  for(const day of data) {
     if(day > 0){
       trainingDays++;
     }else if(day < target) {
       failDays++;
     }
-    average += day
+    average += day;
   }
 
-  rating = 10 - Math.floor(failDays / periodLength * 10)
+  const rating = 10 - Math.floor(failDays / periodLength * 10);
   if(rating < 5){
-    ratingDescription = 'Too bad'
+    ratingDescription = 'Too bad';
   }else if(rating <= 8){
-    ratingDescription = 'not too bad but could be better'
+    ratingDescription = 'not too bad but could be better';
   }else{
-    ratingDescription = 'Good job!'
+    ratingDescription = 'Good job!';
   }
 
-  const result = { 
+  const result = {
     periodLength: periodLength,
     trainingDays: trainingDays,
     success: failDays ? false : true,
@@ -62,9 +62,9 @@ const calculateExercises = (target: number, data: Array<number>): Result => {
     ratingDescription: ratingDescription,
     target: target,
     average: average/periodLength
-  }
-  return result
-}
+  };
+  return result;
+};
 
 const { target, data } = parseArguments(process.argv);
 console.log(calculateExercises(target, data));
