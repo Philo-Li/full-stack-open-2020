@@ -1,8 +1,10 @@
 const calculateBmi = (height: number, mass: number): string => {
   const changedHeight = (height/100)**2
   const bmi = mass/changedHeight
-  console.log('bmi', bmi)
-  if (bmi < 18.5) {
+  console.log('height', height, 'mass', mass, 'bmi', bmi)
+  if(isNaN(Number(bmi))){
+    throw new Error('malformatted parameters');
+  }else if (bmi < 18.5) {
     return 'underweight';
   } else if (bmi < 25) {
     return 'normal weight';
@@ -15,7 +17,9 @@ const calculateBmi = (height: number, mass: number): string => {
 
 // console.log(calculateBmi(180, 74));
 
-const height: number = Number(process.argv[2]);
-const mass: number = Number(process.argv[3]);
+// const height: number = Number(process.argv[2]);
+// const mass: number = Number(process.argv[3]);
 
-console.log(calculateBmi(height, mass));
+// console.log(calculateBmi(height, mass));
+
+export {calculateBmi}
