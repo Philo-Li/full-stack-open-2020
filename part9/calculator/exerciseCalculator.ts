@@ -8,28 +8,28 @@ type Result = {
   average: number
 };
 
-interface CalculateValues {
-  target: number;
-  data: Array<number>;
-}
+// interface CalculateValues {
+//   target: number;
+//   data: Array<number>;
+// }
 
-const parseArguments = (args: Array<string>): CalculateValues => {
-  if (args.length < 4) throw new Error('Not enough arguments');
-  const [a, b, target, ...temp] = args;
-  console.log(a, b, 'target', target, 'temp', temp);
+// const parseArguments = (args: Array<string>): CalculateValues => {
+//   if (args.length < 4) throw new Error('Not enough arguments');
+//   const [a, b, target, ...temp] = args;
+//   console.log(a, b, 'target', target, 'temp', temp);
 
-  const data = temp.map(a => {
-    if(isNaN(Number(a))){
-      throw new Error('Provided values were not numbers!');
-    }
-    return Number(a);
-  });
+//   const data = temp.map(a => {
+//     if(isNaN(Number(a))){
+//       throw new Error('Provided values were not numbers!');
+//     }
+//     return Number(a);
+//   });
 
-  return {
-    target: Number(args[2]),
-    data: data.slice(1)
-  };
-};
+//   return {
+//     target: Number(args[2]),
+//     data: data.slice(1)
+//   };
+// };
 
 const calculateExercises = (target: number, data: Array<number>): Result => {
   const periodLength = data.length;
@@ -66,7 +66,8 @@ const calculateExercises = (target: number, data: Array<number>): Result => {
   return result;
 };
 
-const { target, data } = parseArguments(process.argv);
-console.log(calculateExercises(target, data));
+// const { target, data } = parseArguments(process.argv);
+// console.log(calculateExercises(target, data));
 
 // console.log(calculateExercises(2, [3, 0, 2, 4.5, 0, 3, 1]))
+export { calculateExercises };
