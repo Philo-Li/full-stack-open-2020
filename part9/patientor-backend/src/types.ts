@@ -18,7 +18,7 @@ interface HospitalEntry extends BaseEntry {
   discharge: {
     date: string;
     criteria: string;
-  },
+  };
 }
 
 interface OccupationalHealthcareEntry extends BaseEntry {
@@ -27,7 +27,7 @@ interface OccupationalHealthcareEntry extends BaseEntry {
   sickLeave?: {
     startDate: string;
     endDate: string;
-  },
+  };
 }
 
 export enum HealthCheckRating {
@@ -59,9 +59,9 @@ export interface PatientEntry {
 export interface Patient {
   id: string;
   name: string;
-  dateOfBirth: string;
-  ssn: string;
-  gender: string;
+  dateOfBirth?: string;
+  ssn?: string;
+  gender: Gender;
   occupation: string;
   entries: Entry[];
 }

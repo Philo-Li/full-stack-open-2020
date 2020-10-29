@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { Container, Icon, Table, Button } from "semantic-ui-react";
+import { Container, Icon, Table, Button, Card } from "semantic-ui-react";
 
 import { Patient } from "../types";
 import { apiBaseUrl } from "../constants";
@@ -67,9 +67,30 @@ const PatientDetails: React.FC = () => {
         <h1>
           {patient.name} <Icon {...genderIconProps[patient.gender]} />
         </h1>
+        <p>ssn: {patient.ssn}</p>
+        <p>occupation: {patient.occupation}</p>
+
+        <h3>entries</h3>
+        <Card.Group>
+        {patient.entries.map(entry => {
+          return(
+          <div key = {entry.id} >
+            {entry.date} {entry.description}
+            <ul>
+              {entry.diagnosisCodes?.map(code => {
+                return(
+                  <li key={code}>
+                    {code}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+          );
+        })}
+        </Card.Group>
       </Container>
-      <p>ssn: {patient.ssn}</p>
-      <p>occupation: {patient.occupation}</p>
+      
     </div>
   );
 };
