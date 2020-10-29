@@ -17,6 +17,7 @@ const genderIconProps = {
 const PatientDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [{ patients }, dispatch] = useStateValue();
+  const [{ diagnoses }] = useStateValue();
   const fetchStatus = useRef({ shouldFetch: false, hasFetched: false });
 
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
@@ -75,12 +76,14 @@ const PatientDetails: React.FC = () => {
         {patient.entries.map(entry => {
           return(
           <div key = {entry.id} >
-            {entry.date} {entry.description}
+            <ul>{entry.date} {entry.description}</ul>
             <ul>
               {entry.diagnosisCodes?.map(code => {
+                console.log(diagnoses);
                 return(
                   <li key={code}>
-                    {code}
+                    <strong>{code} - </strong>
+                    {diagnoses[code] && diagnoses[code].name}
                   </li>
                 );
               })}
