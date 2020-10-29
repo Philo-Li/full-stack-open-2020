@@ -5,12 +5,12 @@ import toNewPatientEntry from '../utils';
 const router = express.Router();
 
 router.get('/', (_req, res) => {
-  res.send(patientService.getNonSensitiveEntries())
-})
+  res.send(patientService.getPatients());
+});
 
 router.get('/:id', (req, res) => {
-  res.send(patientService.getPublicPatient(req.params.id))
-})
+  res.send(patientService.getPublicPatient(req.params.id));
+});
 
 router.post('/', (req, res) => {
   try {
@@ -21,6 +21,6 @@ router.post('/', (req, res) => {
   } catch (e) {
     res.status(400).send(e.message); 
   }
-})
+});
 
 export default router;

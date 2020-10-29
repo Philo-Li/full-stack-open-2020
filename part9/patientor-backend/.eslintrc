@@ -15,11 +15,17 @@
     "@typescript-eslint/no-unused-vars": [
         "error", { "argsIgnorePattern": "^_" }
     ],
-     "@typescript-eslint/no-explicit-any": 1,
-    "no-case-declarations": 0
+    "@typescript-eslint/no-explicit-any": 0,
+    "no-case-declarations": 0,
+    "@typescript-eslint/prefer-as-const": 0,
+    "@typescript-eslint/no-empty-interface": 0,
+    "@typescript-eslint/no-unsafe-member-access": 0,
+    "@typescript-eslint/restrict-template-expressions": 0,
+    "react/prop-types": 0
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": "./tsconfig.json",
+    "tsconfigRootDir": "d:/work/cs/github/full-stack-open-2020/part9/patientor-backend/"
   }
 }

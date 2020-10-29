@@ -19,7 +19,7 @@ const isDate = (date: string): boolean => {
 
 const parseDate = (date: any): string => {
   if (!date || !isString(date) || !isDate(date)) {
-      throw new Error('Incorrect or missing date: ' + date);
+      throw new Error(`Incorrect or missing date: ${date}`);
   }
   return date;
 };
@@ -30,7 +30,7 @@ const isGender = (param: any): param is Gender => {
 
 const parseGender = (gender: any): Gender => {
   if (!gender || !isGender(gender)) {
-      throw new Error('Incorrect or missing gender: ' + gender);
+      throw new Error(`Incorrect or missing gender: ${gender}`);
   } 
   return gender;
 };

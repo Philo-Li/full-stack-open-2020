@@ -1,32 +1,17 @@
-import { Gender, NewPatientEntry } from './types';
+import { Gender, Entry, Patient } from './types';
 
 const isString = (text: any): text is string => {
   return typeof text === 'string' || text instanceof String;
 };
 
-const parseName = (name: any): string => {
-  if (!name || !isString(name)) {
-    throw new Error('Incorrect or missing name: ' + name);
+const parseToString = (param: any, paramName: string): string => {
+  if (!param || !isString(param)) {
+    throw new Error(
+      `Incorrect or missing ${paramName}: ${param}`
+    );
   }
-
-  return name;
-}
-
-const parseSsn = (ssn: any): string => {
-  if (!ssn || !isString(ssn)) {
-    throw new Error('Incorrect or missing ssn: ' + ssn);
-  }
-
-  return ssn;
-}
-
-const parseOccupation = (occupation: any): string => {
-  if (!occupation || !isString(occupation)) {
-    throw new Error('Incorrect or missing occupation: ' + occupation);
-  }
-
-  return occupation;
-}
+  return param;
+};
 
 const isDate = (date: string): boolean => {
   return Boolean(Date.parse(date));
@@ -34,7 +19,7 @@ const isDate = (date: string): boolean => {
 
 const parseDate = (date: any): string => {
   if (!date || !isString(date) || !isDate(date)) {
-      throw new Error('Incorrect or missing date: ' + date);
+      throw new Error(`Incorrect or missing date: ${date}`);
   }
   return date;
 };
@@ -45,19 +30,36 @@ const isGender = (param: any): param is Gender => {
 
 const parseGender = (gender: any): Gender => {
   if (!gender || !isGender(gender)) {
-      throw new Error('Incorrect or missing gender: ' + gender);
+      throw new Error(`Incorrect or missing gender: ${gender}`);
   } 
   return gender;
 };
 
-const toNewPatientEntry = (object: any): NewPatientEntry => {
-  return {
-    name: parseName(object.name),
-    dateOfBirth: parseDate(object.dateOfBirth),
-    ssn: parseSsn(object.ssn),
-    gender: parseGender(object.gender),
-    occupation: parseOccupation(object.occupation),
-  };
-} 
+const isArrayOfEntries = (_param: any[]): _param is Entry[] => {
+  // return Object.values(EntryType).includes(param.type);
+  return true;
+};
 
-export default toNewPatientEntry;
+const parseEntries = (entries: any): Entry[] => {
+  if (!entries || !Array.isArray(entries) || !isArrayOfEntries(entries)) {
+    throw new Error(
+      `Incorrect or missing entries: ${JSON.stringify(entries)}`
+    );
+  }
+  return entries;
+};
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const toPatient = (object: any): Patient => {
+  return {
+    name: parseToString(object.name, "name"),
+    occupation: parseToString(object.occupation, "occupation"),
+    gender: parseGender(object.gender),
+    ssn: parseToString(object.ssn, "ssn"),
+    dateOfBirth: parseDate(object.dateOfBirth),
+    id: parseToString(object.id, "id"),
+    entries: parseEntries(object.entries),
+  };
+};
+
+export default toPatient;

@@ -63,7 +63,7 @@ const PatientDetails: React.FC = () => {
 
   return (
     <div className="App">
-      <Container textAlign="center">
+      <Container>
         <h1>
           {patient.name} <Icon {...genderIconProps[patient.gender]} />
         </h1>
