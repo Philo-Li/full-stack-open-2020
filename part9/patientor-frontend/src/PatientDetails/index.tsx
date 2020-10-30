@@ -1,12 +1,13 @@
 import React, { useRef, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { Container, Icon, Table, Button, Card } from "semantic-ui-react";
+import { Container, Icon, Card } from "semantic-ui-react";
 
 import { Patient } from "../types";
 import { apiBaseUrl } from "../constants";
 import { useStateValue, updatePatient } from "../state";
 import { toPatient } from "../utils";
+import EntryDetails from "./EntryDetails";
 
 const genderIconProps = {
   male: { name: "mars" as "mars", color: "blue" as "blue" },
@@ -19,10 +20,6 @@ const PatientDetails: React.FC = () => {
   const [{ patients }, dispatch] = useStateValue();
   const [{ diagnoses }] = useStateValue();
   const fetchStatus = useRef({ shouldFetch: false, hasFetched: false });
-
-  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
-  const [error, setError] = React.useState<string | undefined>();
-  const openModal = (): void => setModalOpen(true);
 
   let patient = patients[id];
 
@@ -55,10 +52,6 @@ const PatientDetails: React.FC = () => {
     }
   }, [id, dispatch]);
 
-  const closeModal = (): void => {
-    setModalOpen(false);
-    setError(undefined);
-  };
 
   if (!patient) return null;
 
@@ -76,18 +69,29 @@ const PatientDetails: React.FC = () => {
         {patient.entries.map(entry => {
           return(
           <div key = {entry.id} >
-            <ul>{entry.date} {entry.description}</ul>
-            <ul>
-              {entry.diagnosisCodes?.map(code => {
-                console.log(diagnoses);
-                return(
-                  <li key={code}>
-                    <strong>{code} - </strong>
-                    {diagnoses[code] && diagnoses[code].name}
-                  </li>
-                );
-              })}
-            </ul>
+            <Card fluid>
+              <Card.Content>
+                <Card.Header>
+                  {entry.date}
+                  <Icon name='user md' size='large'/>
+                </Card.Header>
+                <Card.Meta>specialist: {entry.specialist}</Card.Meta>
+                <Card.Description>
+                description: {entry.description}
+                  <ul>
+                    {entry.diagnosisCodes?.map(code => {
+                      return(
+                        <li key={code}>
+                          <strong>{code} - </strong>
+                          {diagnoses[code] && diagnoses[code].name}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                  <EntryDetails entry={entry} />
+                </Card.Description>
+              </Card.Content>
+            </Card>            
           </div>
           );
         })}
