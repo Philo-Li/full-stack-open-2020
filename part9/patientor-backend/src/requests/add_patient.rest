@@ -2,10 +2,20 @@ POST http://localhost:3001/api/patients
 Content-Type: application/json
 
 {
-  "name": "John McClane1",
+  "name": "John McClane2",
   "dateOfBirth": "1986-07-09",
   "ssn": "090786-122X",
   "gender": "male",
-  "occupation": "New york city cop"
+  "occupation": "New york city cop",
+  "entries": [
+    {
+      "id": "54a8746e-34c4-4cf4-bf72-bfecd039be9a",
+      "date": "2019-05-01",
+      "specialist": "Dr Byte House",
+      "type": "EntryType.HealthCheck",
+      "description": "Digital overdose, very bytestatic. Otherwise healthy.",
+      "healthCheckRating": 0
+    }
+  ]
 }
 

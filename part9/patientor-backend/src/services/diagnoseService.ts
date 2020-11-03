@@ -1,16 +1,11 @@
-import diagnoses from '../../data/diagnosesTS'
-import { DiagnoseEntry } from '../types';
+import diagnoses from '../../data/diagnosesTS';
+import { Diagnosis } from '../types';
 
-const getEntries = (): Array<DiagnoseEntry> => {
+const getEntries = (): Array<Diagnosis> => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return diagnoses;
 };
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const addEntry = () => {
-  return null;
-};
-
 export default {
-  getEntries,
-  addEntry
+  getEntries
 };
