@@ -1,26 +1,19 @@
-import React, { useRef, useEffect } from "react";
-import axios from "axios";
-import { Container, Icon, Table, Button, Card } from "semantic-ui-react";
+import React from "react";
+import { assertNever } from "../utils";
 
-import { Entry } from "../types";
+import { Entry, EntryType } from "../types";
 import HospitalEntry from "./HospitalEntry";
 import OccupationalHealthcareEntry from "./OccupationalHealthcareEntry";
 import HealthCheckEntry from "./HealthCheckEntry";
 
-const assertNever = (value: never): never => {
-  throw new Error(
-    `Unhandled discriminated union member: ${JSON.stringify(value)}`
-  );
-};
-
 const EntryDetails: React.FC<{ entry: Entry }> = ({ entry }) => {
   switch (entry.type){
-    case 'Hospital':
-      return <HospitalEntry discharge={entry.discharge}/>;
-    case 'OccupationalHealthcare':
-      return <OccupationalHealthcareEntry employerName={entry.employerName} sickLeave={entry.sickLeave}/>;
-    case 'HealthCheck':
-      return <HealthCheckEntry healthCheckRating={entry.healthCheckRating}/>;
+    case EntryType.Hospital:
+      return <HospitalEntry entry={entry}/>;
+    case EntryType.OccupationalHealthcare:
+      return <OccupationalHealthcareEntry entry={entry}/>;
+    case EntryType.HealthCheck:
+      return <HealthCheckEntry entry={entry}/>;
     default:
       // eslint-disable-next-line no-undef
       return assertNever(entry);

@@ -2,7 +2,7 @@ import React from "react";
 
 import { Container, Icon } from "semantic-ui-react";
 
-import { HealthCheckRating } from "../types";
+import { HealthCheckEntry as HealthCheck } from "../types";
 
 const ratingIconProps = {
   0: { name: "heart" as "heart", color: "blue" as "blue" },
@@ -11,12 +11,12 @@ const ratingIconProps = {
   3: { name: "heart" as "heart", color: "red" as "red" },
 };
 
-const HealthCheckEntry: React.FC<{ healthCheckRating: HealthCheckRating }> = ({ healthCheckRating }) => {
+const HealthCheckEntry: React.FC<{ entry: HealthCheck }> = ({ entry }) => {
   return (
     <div>
       <Container>
         healthCheckRating:
-        <Icon {...ratingIconProps[healthCheckRating]} />
+        <Icon {...ratingIconProps[entry.healthCheckRating]} />
       </Container>
     </div>
   );

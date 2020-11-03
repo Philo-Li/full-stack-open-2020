@@ -1,13 +1,14 @@
 import React, { useRef, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { Container, Icon, Card } from "semantic-ui-react";
+import { Container, Icon, Card, Button } from "semantic-ui-react";
 
-import { Patient } from "../types";
+import { Patient, NewEntry, EntryType } from "../types";
 import { apiBaseUrl } from "../constants";
 import { useStateValue, updatePatient } from "../state";
 import { toPatient } from "../utils";
 import EntryDetails from "./EntryDetails";
+import AddEntryModal from "../AddEntryModal";
 
 const genderIconProps = {
   male: { name: "mars" as "mars", color: "blue" as "blue" },
@@ -20,6 +21,10 @@ const PatientDetails: React.FC = () => {
   const [{ patients }, dispatch] = useStateValue();
   const [{ diagnoses }] = useStateValue();
   const fetchStatus = useRef({ shouldFetch: false, hasFetched: false });
+
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<string | undefined>();
+  const openModal = (): void => setModalOpen(true);
 
   let patient = patients[id];
 
@@ -53,7 +58,35 @@ const PatientDetails: React.FC = () => {
   }, [id, dispatch]);
 
 
+  const closeModal = (): void => {
+    setModalOpen(false);
+    setError(undefined);
+  };
+
   if (!patient) return null;
+
+  const submitNewEntry = async (values: NewEntry) => {
+    const body = { ...values };
+
+    if (body.type === EntryType.OccupationalHealthcare) {
+      if (!body.sickLeave?.endDate && !body.sickLeave?.startDate) {
+        body.sickLeave = undefined;
+      }
+    }
+
+    try {
+      const { data: returnedPatient } = await axios.post<Patient>(
+        `${apiBaseUrl}/patients/${patient.id}/entries`,
+        body
+      );
+      dispatch(updatePatient(returnedPatient));
+      closeModal();
+    } catch (e) {
+      console.error(e.response?.data);
+      setError(e.response.data.error);
+    }
+  };
+
 
   return (
     <div className="App">
@@ -64,7 +97,16 @@ const PatientDetails: React.FC = () => {
         <p>ssn: {patient.ssn}</p>
         <p>occupation: {patient.occupation}</p>
 
-        <h3>entries</h3>
+        <AddEntryModal
+          modalOpen={modalOpen}
+          onSubmit={submitNewEntry}
+          error={error}
+          onClose={closeModal}
+        />
+        <Button onClick={openModal}>Add New Entry</Button>
+
+        {patient.entries.length > 0 && <h2>Entries</h2>}
+
         <Card.Group>
         {patient.entries.map(entry => {
           return(

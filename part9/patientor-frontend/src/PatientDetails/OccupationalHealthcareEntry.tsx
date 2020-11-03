@@ -1,35 +1,21 @@
 import React from "react";
-import { Container, Icon, Card } from "semantic-ui-react";
+import { List } from "semantic-ui-react";
 
-import { Entry } from "../types";
+import { OccupationalHealthcareEntry as OccupationalHealthcare } from "../types";
 
-type SickLeave = {
-  startDate: string;
-  endDate: string;
-};
-
-const sickLeaveForm = (sickLeave: SickLeave) => {
+const OccupationalHealthcareEntry: React.FC<{ entry: OccupationalHealthcare }> = ({ entry }) => {
   return (
-    <div>
-      sickLeave:
-      <ul>
-        startDate: {sickLeave.startDate}
-      </ul>
-      <ul>
-        endDate: {sickLeave.endDate}
-      </ul>
-    </div>
-  );
-};
-
-const OccupationalHealthcareEntry: React.FC<{ employerName: string; sickLeave: SickLeave }> = ({ employerName, sickLeave }) => {
-  return (
-    <div>
-      <Container>
-        employerName: {employerName}
-        { sickLeave ? sickLeaveForm(sickLeave) : null}
-      </Container>
-    </div>
+    <List>
+      <List.Item>
+        <strong>Employer:</strong> {entry.employerName}
+      </List.Item>
+      {entry.sickLeave && (
+        <List.Item>
+          <strong>Sick Leave:</strong> {entry.sickLeave.startDate} to{" "}
+          {entry.sickLeave.endDate}
+        </List.Item>
+      )}
+    </List>
   );
 };
 

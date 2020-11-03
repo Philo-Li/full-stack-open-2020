@@ -61,3 +61,9 @@ export const toPatient = (object: any): Patient => {
 };
 
 export default toPatient;
+
+export const assertNever = (value: never): never => {
+  throw new Error(
+    `Unhandled discriminated union member: ${JSON.stringify(value)}`
+  );
+};

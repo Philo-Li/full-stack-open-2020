@@ -1,24 +1,15 @@
 import React from "react";
-import { Container, Icon } from "semantic-ui-react";
+import { List } from "semantic-ui-react";
+import { HospitalEntry as Hospital } from "../types";
 
-type Discharge = {
-  date: string;
-  criteria: string;
-};
-
-const HospitalEntry: React.FC<{ discharge: Discharge }> = ({ discharge }) => {
+const HospitalEntry: React.FC<{ entry: Hospital }> = ({ entry }) => {
   return (
-    <div>
-      <Container>
-        discharge:
-        <ul>
-          date: {discharge.date}
-        </ul>
-        <ul>
-          criteria: {discharge.criteria}
-        </ul>
-      </Container>
-    </div>
+    <List>
+      <List.Item>
+        <List.Header>Discharged on {entry.discharge.date}</List.Header>
+        {entry.discharge.criteria}
+      </List.Item>
+    </List>
   );
 };
 
